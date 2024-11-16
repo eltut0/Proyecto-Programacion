@@ -1,5 +1,7 @@
 ﻿public class GenerateMaze
 {
+    //tamanno del laberinot
+    public static int size = 39;
     //pila para ir generando caminos
     public static Stack<Position> Stack = new Stack<Position>();
 
@@ -7,15 +9,15 @@
     public static List<Position> List = new List<Position>();
 
     //crea la matriz q representa al laberinto
-    public static char[,] Maze()
+    public static string[,] Maze()
     {
-        char[,] Maze = new char[31, 31];
+        string[,] Maze = new string[size, size];
 
-        for (int i = 0; i < 31; i++)
+        for (int i = 0; i < size; i++)
         {
-            for (int j = 0; j < 31; j++)
+            for (int j = 0; j < size; j++)
             {
-                Maze[i,j] = '#';
+                Maze[i,j] = "#";
             }
         }
         return Maze;
@@ -36,7 +38,7 @@
                 entrance.xcoordinate = RandomCoordinate();
                 return entrance;
             case 1:
-                entrance.ycoordinate = 29;
+                entrance.ycoordinate = size-2;
                 entrance.xcoordinate = RandomCoordinate();
                 return entrance;
             case 2:
@@ -45,7 +47,7 @@
                 return entrance;
             case 3:
                 entrance.ycoordinate = RandomCoordinate();
-                entrance.xcoordinate = 29;
+                entrance.xcoordinate = size-2;
                 return entrance;
             default:
                 Console.WriteLine("Error en Entrance()");
@@ -61,7 +63,7 @@
 
         do
         {
-            randomposition = random1.Next(1, 30);
+            randomposition = random1.Next(1, size-1);
         } while (randomposition % 2 == 0);
 
         return randomposition;
@@ -94,7 +96,7 @@
         }
 
         //comprobar arreglo en 1
-        if (!(y+2 >= 30))
+        if (!(y+2 >= size-1))
         {
             var position1 = List.Find(c => c.ycoordinate==y+2 && c.xcoordinate == x);
             if (position1 != null)
@@ -108,7 +110,7 @@
         }
 
         //comprobar arreglo en 2
-        if (!(x+2 >= 30))
+        if (!(x+2 >= size - 1))
         {
             var position2 = List.Find(c => c.xcoordinate==x+2 && c.ycoordinate == y);
             if (position2 != null)
@@ -186,16 +188,16 @@
 
     //hace toda la pincha de generar el laberinto
 
-    public static char[,] GeneratingMaze()
+    public static string[,] GeneratingMaze()
     {
-        char[,] maze = Maze();
+        string[,] maze = Maze();
 
         var position = Entrance();
         var temp = new Position();
 
         Stack.Push(position);
         List.Add(position);
-        maze[position.xcoordinate, position.ycoordinate] = 'W';
+        maze[position.xcoordinate, position.ycoordinate] = "W";
 
         do
         {
@@ -209,22 +211,14 @@
                 if (Stack.Count != 0)
                 {
                     var probando = Stack.Peek();
-                    
-                    //borrarrrrrrrrrrrrr
-                    
+                    /*
+                    //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
                     Console.Clear();
                     maze[probando.xcoordinate, probando.ycoordinate] = 'E';
-                    for (int i = 0; i < 31; i++)
-                    {
-                        for (int j = 0; j < 31; j++)
-                        {
-                            Console.Write(maze[i, j]);
-                            Console.Write(" ");
-                        }
-                        Console.WriteLine();
-                    }
+                    Interface.PrintMaze(maze);
                     Thread.Sleep(200);
-                    maze[probando.xcoordinate, probando.ycoordinate] = ' '; //hasta aquiiiiiiiii
+                    maze[probando.xcoordinate, probando.ycoordinate] = ' ';
+                    //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr*/
                 }
             }
             else
@@ -237,35 +231,27 @@
                     //direccion sur
                     if (position.ycoordinate - temp.ycoordinate > 0)
                     {
-                        maze[temp.xcoordinate, temp.ycoordinate] = ' ';
-                        maze[temp.xcoordinate, temp.ycoordinate + 1] = ' ';
+                        maze[temp.xcoordinate, temp.ycoordinate] = " ";
+                        maze[temp.xcoordinate, temp.ycoordinate + 1] = " ";
                     }
                     //direccion norete
                     else
                     {
-                        maze[temp.xcoordinate, temp.ycoordinate] = ' ';
-                        maze[temp.xcoordinate, temp.ycoordinate - 1] = ' ';
+                        maze[temp.xcoordinate, temp.ycoordinate] = " ";
+                        maze[temp.xcoordinate, temp.ycoordinate - 1] = " ";
                     }
 
 
 
-                    
+                    /*
                     //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
                     Console.Clear();
                     maze[temp.xcoordinate, temp.ycoordinate] = 'E';
-                    for (int i = 0; i < 31; i++)
-                    {
-                        for (int j = 0; j < 31; j++)
-                        {
-                            Console.Write(maze[i, j]);
-                            Console.Write(" ");
-                        }
-                        Console.WriteLine();
-                    }
+                    Interface.PrintMaze(maze);
                     Thread.Sleep(200);
-                    maze[temp.xcoordinate, temp.ycoordinate] = ' '; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-                    
+                    maze[temp.xcoordinate, temp.ycoordinate] = ' '; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii*/
+
 
 
 
@@ -275,35 +261,27 @@
                 {
                     if (position.xcoordinate - temp.xcoordinate > 0)
                     {
-                        maze[temp.xcoordinate, temp.ycoordinate] = ' ';
-                        maze[temp.xcoordinate + 1, temp.ycoordinate] = ' ';
+                        maze[temp.xcoordinate, temp.ycoordinate] = " ";
+                        maze[temp.xcoordinate + 1, temp.ycoordinate] = " ";
                     }
                     else
                     {
-                        maze[temp.xcoordinate, temp.ycoordinate] = ' ';
-                        maze[temp.xcoordinate - 1, temp.ycoordinate] = ' ';
+                        maze[temp.xcoordinate, temp.ycoordinate] = " ";
+                        maze[temp.xcoordinate - 1, temp.ycoordinate] = " ";
                     }
 
 
 
 
-                    
+                    /*
                     //probandooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
                     Console.Clear();
                     maze[temp.xcoordinate, temp.ycoordinate] = 'E';
-                    for (int i = 0; i < 31; i++)
-                    {
-                        for (int j = 0; j < 31; j++)
-                        {
-                            Console.Write(maze[i, j]);
-                            Console.Write(" ");
-                        }
-                        Console.WriteLine();
-                    }
+                    Interface.PrintMaze(maze);
                     Thread.Sleep(200);
                     maze[temp.xcoordinate, temp.ycoordinate] = ' ';
 
-                    //probadnooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
+                    //probadnooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo*/
                 }
                 List.Add(temp);
                 Stack.Push(temp);
