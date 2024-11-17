@@ -60,14 +60,8 @@
 
             player.victory = false;
 
-            if (i == 0)
-            {
-                player.token = "P";
-            }
-            else
-            {
-                player.token = "Q";
-            }
+            player.token = Token();
+
             Interface.Writing($"Su ficha sera: {player.token}");
         }
     }
@@ -96,6 +90,42 @@
                 return player;
             }
 
+        } while (true);
+    }
+
+    //seleccion de ficha
+    public static string Token()
+    {
+        do
+        {
+            string temp;
+            do
+            {
+                Interface.WritingWOReadKey("Ingrese un caracter el cual sera su ficha en el juego, no usar emojis:");
+                temp = Console.ReadLine();
+                Console.Clear();
+
+                if (temp == null || temp.Length != 1)
+                {
+                    Interface.Writing("Seleccione un caracter valido");
+
+                }
+                else
+                {
+                    break;
+                }
+            } while (true);
+
+            var temp1 = Player.PlayerList.Find(c => c.token == temp);
+
+            if (temp1 == null)
+            {
+                return temp;
+            }
+            else
+            {
+                Interface.Writing("Esa ficha esta en uso, elija otra.");
+            }
         } while (true);
     }
 }

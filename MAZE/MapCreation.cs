@@ -1,8 +1,9 @@
 ﻿public class MapCreation
 {
 
-    public static string[,] MapCreate(string[,] maze)
+    public static string[,] MapCreate()
     {
+        string[,] maze = GenerateMaze.GeneratingMaze();
         Files(maze);
         Checkpoints(maze);
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-public class Objects
+﻿public class Objects
 {
     //lista que almacena los objetos distribuidos por el mapa(archivos, trampas, carpetas(checkpoints))
     public static List<Objects> Objectslist = new List<Objects>();

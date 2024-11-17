@@ -2,6 +2,7 @@
 {
     //tamanno del laberinot
     public static int size = 39;
+
     //pila para ir generando caminos
     public static Stack<Position> Stack = new Stack<Position>();
 
@@ -187,7 +188,6 @@
     }
 
     //hace toda la pincha de generar el laberinto
-
     public static string[,] GeneratingMaze()
     {
         string[,] maze = Maze();
