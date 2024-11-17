@@ -9,10 +9,11 @@ public class Program
         Interface.BeginnerInfo();
 
         
-        //genera el mapa
+        //genera el mapa y genera los personajes
         string[,] maze = GenerateMaze.GeneratingMaze();
         string[,] map = MapCreation.MapCreate(maze);
-
-
+        Characters.Createcharacters();
+        Player.CreatePlayer();
+        
     }
 }

@@ -214,10 +214,10 @@
                     /*
                     //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
                     Console.Clear();
-                    maze[probando.xcoordinate, probando.ycoordinate] = 'E';
+                    maze[probando.xcoordinate, probando.ycoordinate] = "E";
                     Interface.PrintMaze(maze);
                     Thread.Sleep(200);
-                    maze[probando.xcoordinate, probando.ycoordinate] = ' ';
+                    maze[probando.xcoordinate, probando.ycoordinate] = " ";
                     //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr*/
                 }
             }
@@ -247,10 +247,10 @@
                     //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
 
                     Console.Clear();
-                    maze[temp.xcoordinate, temp.ycoordinate] = 'E';
+                    maze[temp.xcoordinate, temp.ycoordinate] = "E";
                     Interface.PrintMaze(maze);
                     Thread.Sleep(200);
-                    maze[temp.xcoordinate, temp.ycoordinate] = ' '; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii*/
+                    maze[temp.xcoordinate, temp.ycoordinate] = " "; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii*/
 
 
 
@@ -276,10 +276,10 @@
                     /*
                     //probandooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
                     Console.Clear();
-                    maze[temp.xcoordinate, temp.ycoordinate] = 'E';
+                    maze[temp.xcoordinate, temp.ycoordinate] = "E";
                     Interface.PrintMaze(maze);
                     Thread.Sleep(200);
-                    maze[temp.xcoordinate, temp.ycoordinate] = ' ';
+                    maze[temp.xcoordinate, temp.ycoordinate] = " ";
 
                     //probadnooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo*/
                 }

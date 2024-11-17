@@ -1,5 +1,6 @@
 ﻿using Spectre.Console;
 using System.Globalization;
+using System.Numerics;
 using System.Reflection.Metadata.Ecma335;
 
 public class Interface

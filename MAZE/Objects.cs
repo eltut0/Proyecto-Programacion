@@ -10,5 +10,5 @@ public class Objects
     //coordenada del objeto
     public Position position { get; set; }
     //estado activa o no
-    public bool state {  get; set; }
+    public bool state { get; set; }
 }
