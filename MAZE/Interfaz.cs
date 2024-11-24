@@ -23,7 +23,7 @@ public class Interface
             WritingWOReadKey("Ha jugado antes?");
             WritingWOReadKey("Pulse Enter para indicar no, o Barra Espaciadora para indicar si");
 
-            ConsoleKeyInfo key = Console.ReadKey(true);
+            ConsoleKeyInfo key = Console.ReadKey();
 
             Console.ReadKey();
             Console.Clear();

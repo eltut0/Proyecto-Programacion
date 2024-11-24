@@ -21,11 +21,11 @@
         for (int i = 0; i < 2; i++)
         {
             Player player = new Player();
-            Interface.WritingWOReadKey($"Jugador {i + 1}:");
+            Interface.Writing($"Jugador {i + 1}:");
             do
             {
-                Interface.WritingWOReadKey("Elija su tipo de personaje, marque la tecla correspondiente para ver su informacion, y despues elija si desea usarlo o escoger otro.");
-                Interface.WritingWOReadKey("1.Troyano, 2.Gusano, 3.Spyware");
+                Interface.Writing("Elija su tipo de personaje, marque la tecla correspondiente para ver su informacion, y despues elija si desea usarlo o escoger otro.");
+                Interface.Writing("1.Troyano, 2.Gusano, 3.Spyware, 4.Reboot, 5.Metamorfico");
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
                 Console.Clear();
@@ -41,6 +41,14 @@
                 else if (key.Key == ConsoleKey.NumPad3 || key.Key == ConsoleKey.D3)
                 {
                     player = PlayerTypeSelect("Spyware", player);
+                }
+                else if (key.Key == ConsoleKey.NumPad4 || key.Key == ConsoleKey.D4)
+                {
+                    player = PlayerTypeSelect("Reboot", player);
+                }
+                else if (key.Key == ConsoleKey.NumPad5 || key.Key == ConsoleKey.D5)
+                {
+                    player = PlayerTypeSelect("Metamorfico", player);
                 }
                 else
                 {
