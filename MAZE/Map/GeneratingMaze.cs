@@ -1,4 +1,6 @@
-﻿namespace Map
+﻿using MAZE.Players;
+
+namespace MAZE.Map
 {
     public class GenerateMaze
     {
@@ -199,7 +201,6 @@
 
             Stack.Push(position);
             List.Add(position);
-            maze[position.xcoordinate, position.ycoordinate] = "W";
 
             do
             {
@@ -296,6 +297,20 @@
 
             return maze;
 
+        }
+
+        //desbloqeua casillas en la matriz
+        public static void ModMaze(Position position, string[,] maze, string[,] map)
+        {
+            maze[position.xcoordinate, position.ycoordinate] = map[position.xcoordinate, position.ycoordinate];
+            maze[position.xcoordinate+1, position.ycoordinate] = map[position.xcoordinate+1, position.ycoordinate];
+            maze[position.xcoordinate+1, position.ycoordinate+1] = map[position.xcoordinate+1, position.ycoordinate+1];
+            maze[position.xcoordinate, position.ycoordinate+1] = map[position.xcoordinate, position.ycoordinate+1];
+            maze[position.xcoordinate-1, position.ycoordinate] = map[position.xcoordinate-1, position.ycoordinate];
+            maze[position.xcoordinate-1, position.ycoordinate-1] = map[position.xcoordinate-1, position.ycoordinate-1];
+            maze[position.xcoordinate, position.ycoordinate-1] = map[position.xcoordinate, position.ycoordinate-1];
+            maze[position.xcoordinate+1, position.ycoordinate-1] = map[position.xcoordinate+1, position.ycoordinate-1];
+            maze[position.xcoordinate-1, position.ycoordinate+1] = map[position.xcoordinate-1, position.ycoordinate+1];
         }
     }
 }
