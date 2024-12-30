@@ -27,8 +27,6 @@ namespace Interface
                 WritingWOReadKey("Pulse Enter para indicar no, o Barra Espaciadora para indicar si");
 
                 ConsoleKeyInfo key = Console.ReadKey();
-
-                Console.ReadKey();
                 Console.Clear();
                 //muestra o no muestra el tutorial en dependencia del usuario, y devuekve un error y repite en caso de poner un input invalido
 
@@ -72,6 +70,7 @@ namespace Interface
         //escribe con un retraso pa que quede tiza
         public static void Writing(string info)
         {
+            //Console.Clear();
             do
             {
                 if (Console.KeyAvailable)
@@ -175,7 +174,7 @@ namespace Interface
         }
 
         //genera un fotograma de la matriz sin retraso
-        public static void PrintMaze(string[,] maze, Player player1, Player player2)
+        public static void PrintMaze(string[,] maze, string[,] truemap, Player player1, Player player2)
         {
             maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = player1.Token;
             maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = player2.Token;
@@ -197,13 +196,13 @@ namespace Interface
                 AnsiConsole.MarkupLine("[green]{0}[/]", line);
             }
 
-            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = " ";
-            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = " ";
+            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = truemap[player1.Position.xcoordinate, player1.Position.ycoordinate];
+            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = truemap[player2.Position.xcoordinate, player2.Position.ycoordinate];
 
         }
 
         //tabla de info
-        public static void InfoTable(Player player1, Player player2, int turno, int[] dices)
+        public static void InfoTable(Player player1, Player player2, int turno, int[] dices, int moves)
         {
             Table table = new Table();
 
@@ -212,8 +211,9 @@ namespace Interface
             table.AddColumn("Jugador 2");
             table.AddColumn("Turnos hasta limpieza de virus");
             table.AddColumns("Dados");
+            table.AddColumns("Movimientos restantes");
             table.AddRow("Tipo de virus", player1.Type, player2.Type);
-            table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}");
+            table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
             table.AddRow("Turnos hasta habilidad", Convert.ToString(turno % player1.Refresh), Convert.ToString(turno % player2.Refresh));
 
             AnsiConsole.Render(table);
@@ -225,6 +225,20 @@ namespace Interface
             public static void Tips1()
             {
                 AnsiConsole.MarkupLine("[green]Pulse Enter para continuar[/]");
+            }
+        }
+
+        //borrar
+        public static void Printing(string[,] a)
+        {
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    Console.Write(a[i, j]);
+                    Console.Write(' ');
+                }
+                Console.WriteLine();
             }
         }
     }

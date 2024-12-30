@@ -1,4 +1,5 @@
-﻿using MAZE.Players;
+﻿using MAZE.Map;
+using MAZE.Players;
 using Spectre.Console;
 using System;
 public class Program
@@ -10,105 +11,66 @@ public class Program
         Interface.Interface.Tittle();
         Interface.Interface.BeginnerInfo();
 
-        //genera el mapa y genera los personajes
-        string[,] map = MAZE.Map.MapCreation.MapCreate(MAZE.Map.GenerateMaze.GeneratingMaze());
-        //laberinto q sera mostrado en pantalla totlmente bloqueado
-        string[,] truemap = MAZE.Map.GenerateMaze.Maze();
+        //pide el ingreso de la dimension del laberinto
+        Usefulmethods.MazeGetDim();
+
+        //llama al metodo de creacion de mapas tras obtener una dimension valida
+        GenerateMaze.Start();
+
+        //almacenar personajes en lista para dar lugar a la creacion de los jugadores
         MAZE.Players.Characters.Createcharacters();
         MAZE.Players.Player.CreatePlayer();
 
         var player1 = Player.PlayerList.FirstOrDefault();
         var player2 = Player.PlayerList.Skip(1).FirstOrDefault();
 
+        //entero q representa la cantidad de turnos completos
+        int turnmoves;
+        int turns = 0;
+        int[] moves = new int[2];
+
         //bucle principal del juego
         do
-        {
-            //entero q representa la cantidad de turnos completos
-            int turns = 0;
-            //turno jugador 1
+        {   
+            //turno jugador 1 waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
             Interface.Interface.Writing("Jugador 1, lance los dados");
-            int[] moves = Gameplay.Dices();
+            moves = Gameplay.Dices();
+
+            //hacer positivo el resultado
+            if (moves[0] >= moves[1])
+            {
+                turnmoves = Convert.ToInt32((moves[0] - moves[1]) * player1.Speed);
+            }
+            else
+            {
+                turnmoves = Convert.ToInt32((moves[1] - moves[0]) * player1.Speed);
+            }
 
             //buclea del turno de jugador 1
-            do
+            Gameplay.Turn(player1, player2, turns, moves, turnmoves);
+
+            //turno jugador 2 waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+
+            Interface.Interface.Writing("Jugador 2, lance los dados");
+            moves = Gameplay.Dices();
+
+            //hacer positivo el resultado
+            if (moves[0] >= moves[1])
             {
-                Interface.Interface.InfoTable(player1, player2, turns, moves);  //arreglar aqui, 20 es un ejemplo oka
-                MAZE.Map.GenerateMaze.ModMaze(player1.Position, truemap, map);
-                Interface.Interface.PrintMaze(truemap, player1, player2);
+                turnmoves = Convert.ToInt32((moves[0] - moves[1]) * player2.Speed);
+            }
+            else
+            {
+                turnmoves = Convert.ToInt32((moves[1] - moves[0]) * player2.Speed);
+            }
 
-                int turnmoves = Convert.ToInt32((moves[0] - moves[1]) * player1.Speed);
+            //buclea del turno de jugador 2 intercambiando los parametros con respecto a la primera llamada para q el metodo interprete al segundo jugador como el personable jugable
+            Gameplay.Turn(player2, player1, turns, moves, turnmoves);
 
-                if (turnmoves == 0)
-                {
-                    Interface.Interface.Writing("Lamentablemente sus dados dieron un doble, no podra moverse este turno.");
-                }
-                else
-                {
-                    //limpiar la cola de caracteres para el readkey q importa
-                    do
-                    {
-                        if (Console.KeyAvailable)
-                        {
-                            Console.ReadKey();
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    } while (true);
-
-                    //readkey para movimiento
-                    ConsoleKeyInfo key = Console.ReadKey(true);
-
-                    if (key.Key == ConsoleKey.A || key.Key == ConsoleKey.LeftArrow)
-                    {
-                        if (map[player1.Position.xcoordinate, player1.Position.ycoordinate - 1] != "#")
-                        {
-                            player1.Position.ycoordinate -= 2;
-                            turnmoves--;
-                        }
-                    }
-
-                    else if (key.Key == ConsoleKey.D || key.Key == ConsoleKey.RightArrow)
-                    {
-                        if (map[player1.Position.xcoordinate, player1.Position.ycoordinate + 1] != "#")
-                        {
-                            player1.Position.ycoordinate += 2;
-                            turnmoves--;
-                        }
-                    }
-
-                    else if (key.Key == ConsoleKey.W || key.Key == ConsoleKey.UpArrow)
-                    {
-                        if (map[player1.Position.xcoordinate - 1, player1.Position.ycoordinate] != "#")
-                        {
-                            player1.Position.xcoordinate -= 2;
-                            turnmoves--;
-                        }
-                    }
-
-                    else if (key.Key == ConsoleKey.S || key.Key == ConsoleKey.DownArrow)
-                    {
-                        if (map[player1.Position.xcoordinate + 1, player1.Position.ycoordinate] != "#")
-                        {
-                            player1.Position.xcoordinate += 2;
-                            turnmoves--;
-                        }
-                    }
-
-                    if (turnmoves == 0)
-                    {
-                        turns++;
-                        break;
-                    }
-                    //limpia para el siguiente fotograma
-                    Console.Clear();
-                }
-
-                //limpia para el siguiente fotograma
-                Console.Clear();
-
-            } while (true);
         } while (true);
     }
 }
+
+//arreglar la eliminacion de casillas
+//modificar el string builder para dejar los objetos y personajes aparte para ponerlos de un color aparte
+//activar los contadores

@@ -5,13 +5,48 @@ namespace MAZE.Map
     public class GenerateMaze
     {
         //tamanno del laberinot
-        public static int size = 39;
+        public static int size;
+
+        //mapa de lectura
+        public static string[,] truemap;
+
+        //mapa de muestreo
+        public static string[,] map;
 
         //pila para ir generando caminos
         public static Stack<Position> Stack = new Stack<Position>();
 
         //lista q contiene las posiciones visitadas
         public static List<Position> List = new List<Position>();
+
+        //crea los mapas
+        public static void Start()
+        {
+            //genera el mapa y genera los personajes
+            truemap = MAZE.Map.MapCreation.MapCreate(MAZE.Map.GenerateMaze.GeneratingMaze());
+
+            //laberinto q sera mostrado en pantalla totlmente bloqueado
+            map = MAZE.Map.GenerateMaze.Maze();
+            //rellenar con caracteres distintos
+            for (int i = 0; i < MAZE.Map.GenerateMaze.size; i++)
+            {
+                for (int j = 0; j < MAZE.Map.GenerateMaze.size; j++)
+                {
+                    if (truemap[i, j] == "i")
+                    {
+                        map[i, j] = "i";
+                    }
+                    else if (truemap[i, j] == "O")
+                    {
+                        map[i, j] = "O";
+                    }
+                    else
+                    {
+                        map[i, j] = "?";
+                    }
+                }
+            }
+        }
 
         //crea la matriz q representa al laberinto
         public static string[,] Maze()
@@ -218,7 +253,7 @@ namespace MAZE.Map
                         //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
                         Console.Clear();
                         maze[probando.xcoordinate, probando.ycoordinate] = "E";
-                        Interface.PrintMaze(maze);
+                        Interface.Interface.Printing(maze);
                         Thread.Sleep(200);
                         maze[probando.xcoordinate, probando.ycoordinate] = " ";
                         //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr*/
@@ -237,7 +272,7 @@ namespace MAZE.Map
                             maze[temp.xcoordinate, temp.ycoordinate] = " ";
                             maze[temp.xcoordinate, temp.ycoordinate + 1] = " ";
                         }
-                        //direccion norete
+                        //direccion norte
                         else
                         {
                             maze[temp.xcoordinate, temp.ycoordinate] = " ";
@@ -251,7 +286,7 @@ namespace MAZE.Map
 
                         Console.Clear();
                         maze[temp.xcoordinate, temp.ycoordinate] = "E";
-                        Interface.PrintMaze(maze);
+                        Interface.Interface.Printing(maze);
                         Thread.Sleep(200);
                         maze[temp.xcoordinate, temp.ycoordinate] = " "; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii*/
 
@@ -280,7 +315,7 @@ namespace MAZE.Map
                         //probandooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
                         Console.Clear();
                         maze[temp.xcoordinate, temp.ycoordinate] = "E";
-                        Interface.PrintMaze(maze);
+                        Interface.Interface.Printing(maze);
                         Thread.Sleep(200);
                         maze[temp.xcoordinate, temp.ycoordinate] = " ";
 
@@ -293,7 +328,9 @@ namespace MAZE.Map
 
 
 
-            } while (Stack.Count > 0); //condicionar con el stack // ojo // reojo
+            } while (Stack.Count > 0);
+
+            DeleteWalls(maze, size);
 
             return maze;
 
@@ -311,6 +348,63 @@ namespace MAZE.Map
             maze[position.xcoordinate, position.ycoordinate-1] = map[position.xcoordinate, position.ycoordinate-1];
             maze[position.xcoordinate+1, position.ycoordinate-1] = map[position.xcoordinate+1, position.ycoordinate-1];
             maze[position.xcoordinate-1, position.ycoordinate+1] = map[position.xcoordinate-1, position.ycoordinate+1];
+        }
+
+        //elimina casillas aleatorias para tener mas caminos posibles
+        public static void DeleteWalls(string[,] maze, int dim)
+        {
+            for (int i = 0; i < dim/3; i++)
+            {
+                do
+                {
+                    int x = RandomCoordinate();
+                    int y = RandomCoordinate();
+
+                    Position temp = NewWay(x, y);
+
+                    if (x-temp.xcoordinate == 0)
+                    {
+                        if (y - temp.ycoordinate < 0)
+                        {
+                            if(maze[x, y - 1] == "#")
+                            {
+                                maze[x, y - 1] = " ";
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (maze[x, y + 1] == "#")
+                            {
+                                maze[x, y + 1] = " ";
+                                break;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (x-temp.xcoordinate < 0)
+                        {
+                            if (maze[x-1, y] == "#")
+                            {
+                                maze[x-1, y + 1] = " ";
+                                break;
+                            }
+                        }
+                        else
+                        {
+                            if (maze[x + 1, y] == "#")
+                            {
+                                maze[x + 1, y] = " ";
+                                break;
+                            }
+                        }
+                    }
+                    
+                } while (true);
+            }
+
         }
     }
 }

@@ -44,7 +44,7 @@ namespace Objects
         //defino 10 checkpoints aleatorios por el mapa
         public static void Checkpoints(string[,] maze)
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < GenerateMaze.size/2; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
@@ -73,7 +73,7 @@ namespace Objects
         //annadir 7 tampas del tipo DESCONEXION
         public static void DesconnectionTrap(string[,] maze)
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < GenerateMaze.size/5; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
@@ -100,7 +100,7 @@ namespace Objects
         //annadir 7 trampas del tipo REDISTRIBUCION
         public static void RedistributionTrap(string[,] maze)
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < GenerateMaze.size / 5; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
@@ -127,7 +127,7 @@ namespace Objects
         //annadir 7 trampas del tipo DESCONEXION
         public static void FormattingTrap(string[,] maze)
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < GenerateMaze.size / 5; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
