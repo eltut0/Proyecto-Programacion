@@ -23,14 +23,14 @@ namespace MAZE.Map
         public static void Start()
         {
             //genera el mapa y genera los personajes
-            truemap = MAZE.Map.MapCreation.MapCreate(MAZE.Map.GenerateMaze.GeneratingMaze());
+            truemap = MapCreation.MapCreate(GeneratingMaze());
 
             //laberinto q sera mostrado en pantalla totlmente bloqueado
-            map = MAZE.Map.GenerateMaze.Maze();
+            map = Maze();
             //rellenar con caracteres distintos
-            for (int i = 0; i < MAZE.Map.GenerateMaze.size; i++)
+            for (int i = 0; i < size; i++)
             {
-                for (int j = 0; j < MAZE.Map.GenerateMaze.size; j++)
+                for (int j = 0; j < size; j++)
                 {
                     if (truemap[i, j] == "i")
                     {
@@ -232,6 +232,7 @@ namespace MAZE.Map
             string[,] maze = Maze();
 
             var position = Entrance();
+            maze[position.xcoordinate, position.ycoordinate] = " ";
             var temp = new Position();
 
             Stack.Push(position);
@@ -330,7 +331,13 @@ namespace MAZE.Map
 
             } while (Stack.Count > 0);
 
+            //vacia la lista para reutilizar el metodo newway en DEleteWalls
+            List.Clear();
+
             DeleteWalls(maze, size);
+
+            //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
+            Interface.Interface.Printing(maze);
 
             return maze;
 
@@ -362,42 +369,46 @@ namespace MAZE.Map
 
                     Position temp = NewWay(x, y);
 
-                    if (x-temp.xcoordinate == 0)
+                    //comprueba si loq  hay entre estas dos posiciones es un muro, y si es asi lo elimina
+                    if (temp.xcoordinate != -1)
                     {
-                        if (y - temp.ycoordinate < 0)
+                        if (x - temp.xcoordinate == 0)
                         {
-                            if(maze[x, y - 1] == "#")
+                            if (y - temp.ycoordinate < 0)
                             {
-                                maze[x, y - 1] = " ";
-                                break;
+                                if (maze[x, y + 1] == "#")
+                                {
+                                    maze[x, y + 1] = " ";
+                                    break;
+                                }
                             }
-                        }
-                        else
-                        {
-                            if (maze[x, y + 1] == "#")
+                            else
                             {
-                                maze[x, y + 1] = " ";
-                                break;
+                                if (maze[x, y - 1] == "#")
+                                {
+                                    maze[x, y - 1] = " ";
+                                    break;
+                                }
                             }
-                        }
 
-                    }
-                    else
-                    {
-                        if (x-temp.xcoordinate < 0)
-                        {
-                            if (maze[x-1, y] == "#")
-                            {
-                                maze[x-1, y + 1] = " ";
-                                break;
-                            }
                         }
                         else
                         {
-                            if (maze[x + 1, y] == "#")
+                            if (x - temp.xcoordinate < 0)
                             {
-                                maze[x + 1, y] = " ";
-                                break;
+                                if (maze[x + 1, y] == "#")
+                                {
+                                    maze[x + 1, y] = " ";
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (maze[x - 1, y] == "#")
+                                {
+                                    maze[x - 1, y] = " ";
+                                    break;
+                                }
                             }
                         }
                     }

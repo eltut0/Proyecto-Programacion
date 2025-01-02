@@ -71,6 +71,8 @@ public class Program
     }
 }
 
-//arreglar la eliminacion de casillas
-//modificar el string builder para dejar los objetos y personajes aparte para ponerlos de un color aparte
 //activar los contadores
+
+//resuelto
+//arreglado problema del metodo de eliminacion de casillas
+//string builder cambiado para imprimir de un color distinto los objetos

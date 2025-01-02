@@ -1,4 +1,5 @@
-﻿using MAZE.Players;
+﻿using MAZE.Map;
+using MAZE.Players;
 using Spectre.Console;
 using System.Globalization;
 using System.Numerics;
@@ -178,22 +179,43 @@ namespace Interface
         {
             maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = player1.Token;
             maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = player2.Token;
-            string[] lines = new string[maze.GetLength(0)];
 
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < GenerateMaze.size; i++)
             {
                 System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                for (int j = 0; j < maze.GetLength(0); j++)
-                {
-                    sb.Append(maze[i, j]);
-                    sb.Append(' ');
-                }
-                lines[i] = sb.ToString();
-            }
 
-            foreach (var line in lines)
-            {
-                AnsiConsole.MarkupLine("[green]{0}[/]", line);
+                for (int j = 0; j < GenerateMaze.size; j++)
+                {
+                    //separa los objetos variables para ponerlos en string aparte
+                    if (maze[i,j] == "#" || maze[i,j] == " "|| maze[i,j] == "?")
+                    {
+                        sb.Append(maze[i, j]);
+                        sb.Append(' ');
+                    }
+                    else
+                    {
+                        //si aparece algo distinto imprime lo q ya tiene en verde y comrpueba q es lo otro para imoprimirlo en otro color
+                        AnsiConsole.Markup("[green]{0}[/]", sb.ToString());
+
+                        if (maze[i,j] == "i")
+                        {
+                            AnsiConsole.Markup("[bold yellow]{0}[/]", "i ");
+                        }
+                        else if (maze[i,j] == "O")
+                        {
+                            AnsiConsole.Markup("[bold blue]{0}[/]", "O ");
+                        }
+                        else
+                        {
+                            Console.Write($"{maze[i, j]} ");
+                        }
+
+                        //vaciar el string builder
+                        sb.Clear();
+                    }
+                }
+                AnsiConsole.Markup("[green]{0}[/]", sb.ToString());
+                Console.WriteLine();
             }
 
             maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = truemap[player1.Position.xcoordinate, player1.Position.ycoordinate];
@@ -216,7 +238,7 @@ namespace Interface
             table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
             table.AddRow("Turnos hasta habilidad", Convert.ToString(turno % player1.Refresh), Convert.ToString(turno % player2.Refresh));
 
-            AnsiConsole.Render(table);
+            AnsiConsole.Write(table);
         }
 
         //printea tips para el jugador
@@ -243,3 +265,32 @@ namespace Interface
         }
     }
 }
+
+/*
+ * public static void PrintMaze(string[,] maze, string[,] truemap, Player player1, Player player2)
+        {
+            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = player1.Token;
+            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = player2.Token;
+            string[] lines = new string[maze.GetLength(0)];
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                for (int j = 0; j < maze.GetLength(0); j++)
+                {
+                    sb.Append(maze[i, j]);
+                    sb.Append(' ');
+                }
+                lines[i] = sb.ToString();
+            }
+
+            foreach (var line in lines)
+            {
+                AnsiConsole.MarkupLine("[green]{0}[/]", line);
+            }
+
+            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = truemap[player1.Position.xcoordinate, player1.Position.ycoordinate];
+            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = truemap[player2.Position.xcoordinate, player2.Position.ycoordinate];
+
+        }
+*/
