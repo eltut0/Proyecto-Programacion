@@ -1,10 +1,16 @@
 ﻿using MAZE.Map;
 using MAZE.Players;
+using Spectre.Console;
+using System.Diagnostics;
 
 public class Gameplay
 {
     //turnos hasta que se hara la limpieza de virus
     public static int VCleaning = 8;
+
+    //booleano para abortar turno
+    public static bool Stop { get; set; }
+
     //retorna los valores de dos dados
     public static int[] Dices()
     {
@@ -85,21 +91,32 @@ public class Gameplay
 
                 else if (key.Key == ConsoleKey.Spacebar)
                 {
+                    CheckBox(player1, true);
                     Interface.Interface.Writing("Su turno ha acabado");
+                    Stop = false;
                     break;
                 }
 
-                if (turnmoves <= 0)
+                CheckBox(player1, false);
+
+                if (player1.Victory)
+                {
+                    break;
+                }
+
+                else if (turnmoves <= 0 || Stop)
                 {
                     //termina el turno del jugador y aumenta la cantidad de turnos
+                    CheckBox(player1, true);
                     turns++;
                     Console.Clear();
                     //info en pantalla
-                    Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);  //arreglar aqui, 20 es un ejemplo oka
-                    MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                    Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
+                    GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                     Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
                     Thread.Sleep(200);
                     Interface.Interface.Writing("Su turno ha acabado");
+                    Stop = false;
                     break;
                 }
                 else
@@ -110,5 +127,150 @@ public class Gameplay
             }
         } while (true);
         Console.Clear();
+    }
+
+    //se usa para chequear que hay en la casilla en la cual el jugador cayo, tambien recibe un booleano para hacer la comprobacion en dependencia de si es el ultimo movimiento del turno, util para algunas trampas y la condicion de punto seguro
+    //el metodo chequea directamente en la lista de objetos
+    public static void CheckBox(Player player, bool LastMove /*representa si es el ultimo turno*/)
+    {
+        //comprueba si existe una salida
+        if (GenerateMaze.map[player.Position.xcoordinate, player.Position.ycoordinate] == player.ExitChar)
+        {
+            player.Victory = true;
+        }
+        //de lo contrario hace todas las posibles comprobaciones
+        else
+        {
+            //chequea la existencia de un objeto con las posicion del jugador
+            var v = Objects.Objects.Objectslist.Find(c => c.position.xcoordinate == player.Position.xcoordinate && c.position.ycoordinate == player.Position.ycoordinate);
+
+            if (v != null)
+            {
+                if (v.type == "Checkpoint" && LastMove)
+                {
+                    player.IsSafe = true;
+                }
+                else
+                {
+                    player.IsSafe = false;
+                }
+                if (v.type == "Archive")
+                {
+                    //condiciona q el jugador tenga menos de 5 archivos
+                    if (player.Archives < 5)
+                    {
+                        player.Archives++;
+
+                        //muestra la salida una vez q el jugador llegue a 5 archivos
+                        if (player.Archives == 5)
+                        {
+                            GenerateMaze.truemap[player.Exit.xcoordinate, player.Exit.ycoordinate] = player.ExitChar;
+                            GenerateMaze.map[player.Exit.xcoordinate, player.Exit.ycoordinate] = player.ExitChar;
+                        }
+
+                        GenerateMaze.truemap[v.position.xcoordinate, v.position.ycoordinate] = " ";
+                        GenerateMaze.map[v.position.xcoordinate, v.position.ycoordinate] = " ";
+                        Objects.Objects.Objectslist.Remove(v);
+                    }
+                }
+                else if (v.type == "Desconnection")
+                {
+                    Random rnd = new Random();
+
+                    int probability = rnd.Next(1, 5);
+
+                    Console.Clear();
+                    Interface.Interface.Writing("Has caido en una trampa del tipo desconeccion");
+                    Objects.Objects.Objectslist.Remove(v);
+
+                    if (probability == 3)
+                    {
+                        Interface.Interface.Writing("Corriste con suerte, no se ha activado");
+                    }
+                    else
+                    {
+                        Interface.Interface.Writing("Mala suerte, has perdido el resto de tu turno");
+                        Gameplay.Stop = true;
+                    }
+                }
+                else if (v.type == "Redistribution")
+                {
+                    Random rnd = new Random();
+
+                    int probability = rnd.Next(1, 5);
+
+                    Console.Clear();
+                    Interface.Interface.Writing("Has caido en una trampa del tipo redistribucion");
+                    Objects.Objects.Objectslist.Remove(v);
+
+                    if (probability == 3)
+                    {
+                        Interface.Interface.Writing("Corriste con suerte, no se ha activado");
+                    }
+                    else
+                    {
+                        Interface.Interface.Writing("Mala suerte, seras transportado a un lugar aleatorio del tablero");
+
+                        player.Position.xcoordinate = GenerateMaze.RandomCoordinate();
+                        player.Position.ycoordinate = GenerateMaze.RandomCoordinate();
+                    }
+                }
+                else if (v.type == "Formatting" && LastMove == true)
+                {
+                    Console.Clear();
+                    Interface.Interface.Writing("Mala suerte, ha caido en una trampa del tipo formateo del sistema, sera devuelto al inicio");
+                    player.Position.xcoordinate = player.Entrance.xcoordinate;
+                    player.Position.ycoordinate = player.Entrance.ycoordinate;
+                    Objects.Objects.Objectslist.Remove(v);
+                }
+            }
+        }
+    }
+
+    //metodo de antivirus
+    public static void Antivirus()
+    {
+        Console.Clear();
+
+        Interface.Interface.Writing("La limpieza de virus comenzo");
+
+        for (int i = 0; i < 10; i++)
+        {
+            Console.Clear();
+
+            AnsiConsole.Markup("[green]{0}[/]", "Limpiando");
+
+            for (int j = 0; j < 3; j++)
+            {
+                Thread.Sleep(75);
+                AnsiConsole.Markup("[green]{0}[/]", ".");
+            }
+        }
+
+        Console.Clear();
+
+        foreach (var player in Player.PlayerList)
+        {
+            if (!player.IsSafe)
+            {
+                Random rnd = new Random();
+                int probability = rnd.Next(0, 11);
+
+                if (probability != 3 && probability != 7)
+                {
+                    Interface.Interface.Writing($"EL jugador {player.Token} ha sido eliminado por el antivirus");
+                    player.Position.xcoordinate = player.Entrance.xcoordinate;
+                    player.Position.ycoordinate = player.Entrance.ycoordinate;
+                }
+                else
+                {
+                    Interface.Interface.Writing($"EL jugador {player.Token} ha superado la limpieza de antivirus");
+                }
+            }
+            else
+            {
+                Interface.Interface.Writing($"El jugador {player.Token} termino su turno en una casilla segura, por tanto ha superado la limpieza de virus");
+            }
+        }
     }
 }

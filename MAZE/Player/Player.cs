@@ -33,6 +33,15 @@ namespace MAZE.Players
         //velocidad
         public double Speed { get; set; }
 
+        //posicion segura
+        public bool IsSafe { get; set; }
+
+        //salida aleatoria generada
+        public Position Exit {  get; set; }
+
+        //caracter q representa la salida del jugador
+        public string ExitChar {  get; set; }
+
         //se llama para crear los dos personajes
         public static void CreatePlayer()
         {
@@ -43,14 +52,34 @@ namespace MAZE.Players
                 player.Archives = 0;
                 player.Skill = false;
 
-                do {
-                    player.Position = GenerateMaze.Entrance();
-                    player.Entrance = player.Position;
+                //crea la salida aleatoria q sera mostrada una vez q el jugador alcance los 5 archivos
+                do
+                {
+                    player.Exit = new Position();
+                    player.Exit.xcoordinate = GenerateMaze.RandomCoordinate();
+                    player.Exit.ycoordinate = GenerateMaze.RandomCoordinate();
 
-                    var temp = PlayerList.Find(c  => c.Position == player.Position);
+                    var temp = PlayerList.Find(c => c.Exit.xcoordinate == player.Exit.xcoordinate && c.Exit.ycoordinate == player.Exit.ycoordinate);
 
                     if (temp == null)
                     {
+                        break;
+                    }
+
+                } while (true);
+
+                player.ExitChar = Convert.ToString(i + 1);
+
+                do {
+                    player.Position = GenerateMaze.Entrance();
+
+                    var temp = PlayerList.Find(c  => c.Position.xcoordinate == player.Position.xcoordinate && c.Position.ycoordinate == player.Position.ycoordinate);
+
+                    if (temp == null)
+                    {
+                        player.Entrance = new Position();
+                        player.Entrance.xcoordinate = player.Position.xcoordinate;
+                        player.Entrance.ycoordinate = player.Position.ycoordinate;
                         break;
                     }
 

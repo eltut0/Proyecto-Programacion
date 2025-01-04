@@ -11,8 +11,6 @@ namespace Objects
         public string type { get; set; }
         //coordenada del objeto
         public Position position { get; set; }
-        //estado activa o no
-        public bool state { get; set; }
 
         //distribuir los 10 archivos de forma aleatoria en el mapa, y guardar sus posiciones en la lista
         public static void Files(string[,] maze)
@@ -27,7 +25,7 @@ namespace Objects
                 {
                     objects.position.xcoordinate = GenerateMaze.RandomCoordinate();
                     objects.position.ycoordinate = GenerateMaze.RandomCoordinate();
-                    var temp = Objects.Objectslist.Find(c => c.position == objects.position);
+                    var temp = Objects.Objectslist.Find(c => c.position.xcoordinate == objects.position.xcoordinate && c.position.ycoordinate == objects.position.ycoordinate);
 
                     if (temp == null)
                     {
@@ -44,7 +42,7 @@ namespace Objects
         //defino 10 checkpoints aleatorios por el mapa
         public static void Checkpoints(string[,] maze)
         {
-            for (int i = 0; i < GenerateMaze.size/2; i++)
+            for (int i = 0; i < GenerateMaze.size / 2; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
@@ -55,7 +53,7 @@ namespace Objects
                 {
                     objects.position.xcoordinate = GenerateMaze.RandomCoordinate();
                     objects.position.ycoordinate = GenerateMaze.RandomCoordinate();
-                    var temp = Objects.Objectslist.Find(c => c.position == objects.position);
+                    var temp = Objects.Objectslist.Find(c => c.position.xcoordinate == objects.position.xcoordinate && c.position.ycoordinate == objects.position.ycoordinate);
 
                     if (temp == null)
                     {
@@ -73,19 +71,18 @@ namespace Objects
         //annadir 7 tampas del tipo DESCONEXION
         public static void DesconnectionTrap(string[,] maze)
         {
-            for (int i = 0; i < GenerateMaze.size/5; i++)
+            for (int i = 0; i < GenerateMaze.size / 5; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();
                 objects.position = position;
-                objects.state = true;
                 objects.type = "Desconnection";
 
                 do
                 {
                     objects.position.xcoordinate = GenerateMaze.RandomCoordinate();
                     objects.position.ycoordinate = GenerateMaze.RandomCoordinate();
-                    var temp = Objects.Objectslist.Find(c => c.position == objects.position);
+                    var temp = Objects.Objectslist.Find(c => c.position.xcoordinate == objects.position.xcoordinate && c.position.ycoordinate == objects.position.ycoordinate);
 
                     if (temp == null)
                     {
@@ -105,14 +102,13 @@ namespace Objects
                 Objects objects = new Objects();
                 Position position = new Position();
                 objects.position = position;
-                objects.state = true;
                 objects.type = "Redistribution";
 
                 do
                 {
                     objects.position.xcoordinate = GenerateMaze.RandomCoordinate();
                     objects.position.ycoordinate = GenerateMaze.RandomCoordinate();
-                    var temp = Objects.Objectslist.Find(c => c.position == objects.position);
+                    var temp = Objects.Objectslist.Find(c => c.position.xcoordinate == objects.position.xcoordinate && c.position.ycoordinate == objects.position.ycoordinate);
 
                     if (temp == null)
                     {
@@ -132,14 +128,13 @@ namespace Objects
                 Objects objects = new Objects();
                 Position position = new Position();
                 objects.position = position;
-                objects.state = true;
                 objects.type = "Formatting";
 
                 do
                 {
                     objects.position.xcoordinate = GenerateMaze.RandomCoordinate();
                     objects.position.ycoordinate = GenerateMaze.RandomCoordinate();
-                    var temp = Objects.Objectslist.Find(c => c.position == objects.position);
+                    var temp = Objects.Objectslist.Find(c => c.position.xcoordinate == objects.position.xcoordinate && c.position.ycoordinate == objects.position.ycoordinate);
 
                     if (temp == null)
                     {

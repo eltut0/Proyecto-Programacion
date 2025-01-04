@@ -38,7 +38,7 @@ namespace Interface
                     string info3 = "El tablero comenzara totalmente bloqueado, y segun avancen, las casillas adyacentes se iran desbloqueando.";
                     string info4 = "El objetivo principal, sera recolectar 5 archivos (i) de los esparcidos por el tablero, y una vez haya recogido dicha cantidad, se generara una salida aleatoria en el tablero.";
                     string info5 = "La salida que se genere sera exclusivamente para el jugador que logro recolectar los archivos, y una vez que la alcance, el jugador gana la partida.";
-                    string info6 = "Cada 8 turnos, se hara una limpieza de virus en el tablero, y los jugadores deberan estar posicionados en casillas seguras (O), o seran devueltos al principio del tablero.";
+                    string info6 = "Cada 8 turnos, se hara una limpieza de virus en el tablero, y los jugadores deberan estar posicionados en casillas seguras (O), o tienen un 80% de probabilidad de ser devueltos al principio del tablero.";
                     string info7 = "Las trampas esparcidas en el tablero no se pueden ver, algunas se activan cuando pasas sobre ellas, y otras solo cuando el personaje descansa sobre una.";
                     string info8 = "La trampa Desconexion se activa cuando se pasa sobre ella, con una probabilidad del 75%, y hace al jugador perder el resto del turno, una vez que se cae en ella se desactiva para siempre.";
                     string info9 = "La trampa Formateo del sistema, se activa cuando el jugador termina su turno y esta sobre una, devuelve al principio del tablero al jugador.";
@@ -71,7 +71,6 @@ namespace Interface
         //escribe con un retraso pa que quede tiza
         public static void Writing(string info)
         {
-            //Console.Clear();
             do
             {
                 if (Console.KeyAvailable)
@@ -195,7 +194,7 @@ namespace Interface
                     else
                     {
                         //si aparece algo distinto imprime lo q ya tiene en verde y comrpueba q es lo otro para imoprimirlo en otro color
-                        AnsiConsole.Markup("[green]{0}[/]", sb.ToString());
+                        AnsiConsole.Markup("[bold green]{0}[/]", sb.ToString());
 
                         if (maze[i,j] == "i")
                         {
@@ -204,6 +203,14 @@ namespace Interface
                         else if (maze[i,j] == "O")
                         {
                             AnsiConsole.Markup("[bold blue]{0}[/]", "O ");
+                        }
+                        else if (maze[i,j] == "1")
+                        {
+                            AnsiConsole.Markup("[bold red]{0}[/]", "1 ");
+                        }
+                        else if (maze[i, j] == "2")
+                        {
+                            AnsiConsole.Markup("[bold red]{0}[/]", "2 ");
                         }
                         else
                         {
@@ -236,7 +243,7 @@ namespace Interface
             table.AddColumns("Movimientos restantes");
             table.AddRow("Tipo de virus", player1.Type, player2.Type);
             table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
-            table.AddRow("Turnos hasta habilidad", Convert.ToString(turno % player1.Refresh), Convert.ToString(turno % player2.Refresh));
+            table.AddRow("Turnos hasta habilidad", Convert.ToString(player1.Refresh-(turno % player1.Refresh)), Convert.ToString(player2.Refresh-(turno % player2.Refresh)));
 
             AnsiConsole.Write(table);
         }
@@ -249,48 +256,5 @@ namespace Interface
                 AnsiConsole.MarkupLine("[green]Pulse Enter para continuar[/]");
             }
         }
-
-        //borrar
-        public static void Printing(string[,] a)
-        {
-            for (int i = 0; i < a.GetLength(0); i++)
-            {
-                for (int j = 0; j < a.GetLength(1); j++)
-                {
-                    Console.Write(a[i, j]);
-                    Console.Write(' ');
-                }
-                Console.WriteLine();
-            }
-        }
     }
 }
-
-/*
- * public static void PrintMaze(string[,] maze, string[,] truemap, Player player1, Player player2)
-        {
-            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = player1.Token;
-            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = player2.Token;
-            string[] lines = new string[maze.GetLength(0)];
-
-            for (int i = 0; i < lines.Length; i++)
-            {
-                System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                for (int j = 0; j < maze.GetLength(0); j++)
-                {
-                    sb.Append(maze[i, j]);
-                    sb.Append(' ');
-                }
-                lines[i] = sb.ToString();
-            }
-
-            foreach (var line in lines)
-            {
-                AnsiConsole.MarkupLine("[green]{0}[/]", line);
-            }
-
-            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = truemap[player1.Position.xcoordinate, player1.Position.ycoordinate];
-            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = truemap[player2.Position.xcoordinate, player2.Position.ycoordinate];
-
-        }
-*/

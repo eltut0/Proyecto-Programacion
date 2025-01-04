@@ -69,6 +69,4 @@ public class Usefulmethods
             }
         } while (true);
     }
-
-    
 }

@@ -66,33 +66,43 @@ namespace MAZE.Map
         //define una posicion de entrada, decide primero la orientacion (n, s, e, w) y luego genera una posicion aleatoria entre esas mediante un switch
         public static Position Entrance()
         {
-            var entrance = new Position();
-
-            Random random = new Random();
-            int randomposition = random.Next(0, 4);
-
-            switch (randomposition)
+            do
             {
-                case 0:
-                    entrance.ycoordinate = 1;
-                    entrance.xcoordinate = RandomCoordinate();
+                var entrance = new Position();
+
+                Random random = new Random();
+                int randomposition = random.Next(0, 4);
+
+                switch (randomposition)
+                {
+                    case 0:
+                        entrance.ycoordinate = 1;
+                        entrance.xcoordinate = RandomCoordinate();
+                        break;
+                    case 1:
+                        entrance.ycoordinate = size - 2;
+                        entrance.xcoordinate = RandomCoordinate();
+                        break;
+                    case 2:
+                        entrance.ycoordinate = RandomCoordinate();
+                        entrance.xcoordinate = 1;
+                        break;
+                    case 3:
+                        entrance.ycoordinate = RandomCoordinate();
+                        entrance.xcoordinate = size - 2;
+                        break;
+                    default:
+                        Console.WriteLine("Error en Entrance()");
+                        break;
+                }
+
+                var v = Objects.Objects.Objectslist.Find(c => c.position.xcoordinate == entrance.xcoordinate && c.position.ycoordinate == entrance.ycoordinate);
+
+                if (v == null)
+                {
                     return entrance;
-                case 1:
-                    entrance.ycoordinate = size - 2;
-                    entrance.xcoordinate = RandomCoordinate();
-                    return entrance;
-                case 2:
-                    entrance.ycoordinate = RandomCoordinate();
-                    entrance.xcoordinate = 1;
-                    return entrance;
-                case 3:
-                    entrance.ycoordinate = RandomCoordinate();
-                    entrance.xcoordinate = size - 2;
-                    return entrance;
-                default:
-                    Console.WriteLine("Error en Entrance()");
-                    return entrance;
-            }
+                }
+            } while (true);
         }
 
         //retorna un numero aleatorio para ser usado como una coordenada (impar)
@@ -335,9 +345,6 @@ namespace MAZE.Map
             List.Clear();
 
             DeleteWalls(maze, size);
-
-            //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-            Interface.Interface.Printing(maze);
 
             return maze;
 

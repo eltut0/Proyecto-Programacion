@@ -56,23 +56,5 @@
             reboot.speed = 2.6;
             CharactersList.Add(reboot);
         }
-
-        //habilidades especiales
-
-        //devuelve true si se puede retornar al principio
-        public static bool Trojan()
-        {
-            Random random = new Random();
-            int probability = random.Next(0, 100);
-
-            if (probability % 10 == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }
