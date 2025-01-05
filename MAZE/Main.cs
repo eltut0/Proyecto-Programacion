@@ -51,7 +51,7 @@ public class Program
                 }
 
                 //buclea del turno de jugador 1
-                Gameplay.Turn(player1, player2, Turns, moves, turnmoves);
+                Gameplay.Turn(player1, player2, Turns, moves, turnmoves, true);
 
                 if (player1.Victory)
                 {
@@ -74,13 +74,12 @@ public class Program
                 }
 
                 //buclea del turno de jugador 2 intercambiando los parametros con respecto a la primera llamada para q el metodo interprete al segundo jugador como el personable jugable
-                Gameplay.Turn(player2, player1, Turns, moves, turnmoves);
+                Gameplay.Turn(player2, player1, Turns, moves, turnmoves, false);
 
                 if (player2.Victory)
                 {
                     break;
                 }
-
 
                 //modificacion de contadores
                 Turns++;
@@ -90,6 +89,10 @@ public class Program
                 {
                     Gameplay.Antivirus();
                 }
+
+                //actualizacion de contadores de las habilidades de cada jugador
+                Skills.CountSkills(player1);
+                Skills.CountSkills(player2);
 
             } while (true);
 
@@ -110,9 +113,7 @@ public class Program
 }
 
 //pendientes:
-//activar los contadores
+//casilla de guardado fantasma
 
 //resuelto:
-//chequeo de casillas activado, trampas y objetos implementados
-//antivirus
-//annadido un final para el juego
+//hablidades especiales activadas

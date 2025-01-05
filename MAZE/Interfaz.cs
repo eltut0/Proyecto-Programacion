@@ -43,9 +43,10 @@ namespace Interface
                     string info8 = "La trampa Desconexion se activa cuando se pasa sobre ella, con una probabilidad del 75%, y hace al jugador perder el resto del turno, una vez que se cae en ella se desactiva para siempre.";
                     string info9 = "La trampa Formateo del sistema, se activa cuando el jugador termina su turno y esta sobre una, devuelve al principio del tablero al jugador.";
                     string info10 = "La trampa Redistribucion, se activa al pasar sobre ella y envia al jugador a una posicion aleatoria del tablero. Con una probabilidad del 75%, se desactiva despues de caer sobre ella.";
-                    string info11 = "De momento te bastara con esto para comenzar, buena suerte infectando!";
+                    string info11 = "La habilidad especial se activa con la tecla G una vez que el tiempo de refresco haya llegado al limite";
+                    string info12 = "De momento te bastara con esto para comenzar, buena suerte infectando!";
                     //annado los textos del tutorial y la info del juego a un arreglo y voy escribiendolas una por una
-                    string[] strings = { info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11 };
+                    string[] strings = { info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11, info12 };
 
                     foreach (string info in strings)
                     {
@@ -235,15 +236,55 @@ namespace Interface
         {
             Table table = new Table();
 
-            table.AddColumn(" ");
-            table.AddColumn("Jugador 1");
-            table.AddColumn("Jugador 2");
-            table.AddColumn("Turnos hasta limpieza de virus");
-            table.AddColumns("Dados");
-            table.AddColumns("Movimientos restantes");
-            table.AddRow("Tipo de virus", player1.Type, player2.Type);
-            table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
-            table.AddRow("Turnos hasta habilidad", Convert.ToString(player1.Refresh-(turno % player1.Refresh)), Convert.ToString(player2.Refresh-(turno % player2.Refresh)));
+
+            if (!player1.Skill && !player2.Skill)
+            {
+                table.AddColumn(" ");
+                table.AddColumn("Jugador 1");
+                table.AddColumn("Jugador 2");
+                table.AddColumn("Turnos hasta limpieza de virus");
+                table.AddColumns("Dados");
+                table.AddColumns("Movimientos restantes");
+                table.AddRow("Tipo de virus", player1.Type, player2.Type);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
+                table.AddRow("Turnos hasta habilidad", Convert.ToString(player1.SCount), Convert.ToString(player2.SCount));
+            }
+            else if (player1.Skill && !player2.Skill)
+            {
+                table.AddColumn(" ");
+                table.AddColumn("Jugador 1");
+                table.AddColumn("Jugador 2");
+                table.AddColumn("Turnos hasta limpieza de virus");
+                table.AddColumns("Dados");
+                table.AddColumns("Movimientos restantes");
+                table.AddRow("Tipo de virus", player1.Type, player2.Type);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
+                table.AddRow("Turnos hasta habilidad", "Activo", Convert.ToString(player2.SCount));
+            }
+            else if (!player1.Skill && player2.Skill)
+            {
+                table.AddColumn(" ");
+                table.AddColumn("Jugador 1");
+                table.AddColumn("Jugador 2");
+                table.AddColumn("Turnos hasta limpieza de virus");
+                table.AddColumns("Dados");
+                table.AddColumns("Movimientos restantes");
+                table.AddRow("Tipo de virus", player1.Type, player2.Type);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
+                table.AddRow("Turnos hasta habilidad", Convert.ToString(player1.SCount), "Activo");
+            }
+            else
+            {
+                table.AddColumn(" ");
+                table.AddColumn("Jugador 1");
+                table.AddColumn("Jugador 2");
+                table.AddColumn("Turnos hasta limpieza de virus");
+                table.AddColumns("Dados");
+                table.AddColumns("Movimientos restantes");
+                table.AddRow("Tipo de virus", player1.Type, player2.Type);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
+                table.AddRow("Turnos hasta habilidad", "Activo", "Activo");
+            }
 
             AnsiConsole.Write(table);
         }

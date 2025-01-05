@@ -13,7 +13,7 @@ namespace Objects
         public Position position { get; set; }
 
         //distribuir los 10 archivos de forma aleatoria en el mapa, y guardar sus posiciones en la lista
-        public static void Files(string[,] maze)
+        public static void Archive(string[,] maze)
         {
             for (int i = 0; i < 10; i++)
             {

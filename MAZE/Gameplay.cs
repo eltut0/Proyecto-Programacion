@@ -20,14 +20,25 @@ public class Gameplay
     }
 
     //desarrolla el turno de un jugador
-    public static void Turn(Player player1, Player player2, int turns, int[] moves, int turnmoves)
+    public static void Turn(Player player1, Player player2, int turns, int[] moves, int turnmoves, bool Change)
     {
         do
         {
-            //info en pantalla
-            Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
-            MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
-            Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
+            //el booleano change es usado para intercambiar los valores de los parametros entre player 1 y plaer 2, dado q el metodo se llama en main dos veces intercambiando las variables
+            if (Change)
+            {
+                //info en pantalla
+                Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
+                MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
+            }
+            else
+            {
+                //info en pantalla
+                Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves);
+                MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
+            }
 
             if (turnmoves == 0)
             {
@@ -60,6 +71,15 @@ public class Gameplay
                         player1.Position.ycoordinate -= 2;
                         turnmoves--;
                     }
+                    //comprobacion para habilidad de gusano
+                    else if (player1.Type == "Gusano" && player1.USkill && player1.Position.ycoordinate - 2 > 0 || player1.ActualType == "Gusano" && player1.USkill && player1.Position.ycoordinate - 2 > 0)
+                    {
+                        player1.Position.ycoordinate -= 2;
+                        turnmoves--;
+                        player1.Skill = false;
+                        player1.USkill = false;
+                        player1.ActualType = "";
+                    }
                 }
 
                 else if (key.Key == ConsoleKey.D || key.Key == ConsoleKey.RightArrow)
@@ -68,6 +88,15 @@ public class Gameplay
                     {
                         player1.Position.ycoordinate += 2;
                         turnmoves--;
+                    }
+                    //comprobacion para habilidad de gusano
+                    else if (player1.Type == "Gusano" && player1.USkill && player1.Position.ycoordinate + 2 < GenerateMaze.size || player1.ActualType == "Gusano" && player1.USkill && player1.Position.ycoordinate + 2 < GenerateMaze.size)
+                    {
+                        player1.Position.ycoordinate += 2;
+                        turnmoves--;
+                        player1.Skill = false;
+                        player1.USkill = false;
+                        player1.ActualType = "";
                     }
                 }
 
@@ -78,6 +107,15 @@ public class Gameplay
                         player1.Position.xcoordinate -= 2;
                         turnmoves--;
                     }
+                    //comprobacion para habilidad de gusano
+                    else if (player1.Type == "Gusano" && player1.USkill && player1.Position.xcoordinate - 2 > 0 || player1.ActualType == "Gusano" && player1.USkill && player1.Position.xcoordinate - 2 > 0)
+                    {
+                        player1.Position.xcoordinate -= 2;
+                        turnmoves--;
+                        player1.Skill = false;
+                        player1.USkill = false;
+                        player1.ActualType = "";
+                    }
                 }
 
                 else if (key.Key == ConsoleKey.S || key.Key == ConsoleKey.DownArrow)
@@ -86,6 +124,15 @@ public class Gameplay
                     {
                         player1.Position.xcoordinate += 2;
                         turnmoves--;
+                    }
+                    //comprobacion para habilidad de gusano
+                    else if (player1.Type == "Gusano" && player1.USkill && player1.Position.xcoordinate + 2 < GenerateMaze.size || player1.ActualType == "Gusano" && player1.USkill && player1.Position.xcoordinate + 2 < GenerateMaze.size)
+                    {
+                        player1.Position.xcoordinate += 2;
+                        turnmoves--;
+                        player1.Skill = false;
+                        player1.USkill = false;
+                        player1.ActualType = "";
                     }
                 }
 
@@ -97,6 +144,14 @@ public class Gameplay
                     break;
                 }
 
+                else if (key.Key == ConsoleKey.G)
+                {
+                    if (player1.Skill)
+                    {
+                        Skills.Skill(player1);
+                    }
+                }
+
                 CheckBox(player1, false);
 
                 if (player1.Victory)
@@ -106,18 +161,36 @@ public class Gameplay
 
                 else if (turnmoves <= 0 || Stop)
                 {
-                    //termina el turno del jugador y aumenta la cantidad de turnos
-                    CheckBox(player1, true);
-                    turns++;
-                    Console.Clear();
-                    //info en pantalla
-                    Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
-                    GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
-                    Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
-                    Thread.Sleep(200);
-                    Interface.Interface.Writing("Su turno ha acabado");
-                    Stop = false;
-                    break;
+                    if (Change)
+                    {
+                        //termina el turno del jugador y aumenta la cantidad de turnos
+                        CheckBox(player1, true);
+                        turns++;
+                        Console.Clear();
+                        //info en pantalla
+                        Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
+                        GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                        Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
+                        Thread.Sleep(200);
+                        Interface.Interface.Writing("Su turno ha acabado");
+                        Stop = false;
+                        break;
+                    }
+                    else
+                    {
+                        //termina el turno del jugador y aumenta la cantidad de turnos
+                        CheckBox(player1, true);
+                        turns++;
+                        Console.Clear();
+                        //info en pantalla
+                        Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves);
+                        GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                        Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
+                        Thread.Sleep(200);
+                        Interface.Interface.Writing("Su turno ha acabado");
+                        Stop = false;
+                        break;
+                    }
                 }
                 else
                 {
@@ -253,19 +326,46 @@ public class Gameplay
         {
             if (!player.IsSafe)
             {
-                Random rnd = new Random();
-                int probability = rnd.Next(0, 11);
-
-                if (probability != 3 && probability != 7)
+                //condiciona q el personaje sea troyano
+                if (player.Type == "Troyano" && player.USkill || player.ActualType == "Troyano" && player.USkill)
                 {
-                    Interface.Interface.Writing($"EL jugador {player.Token} ha sido eliminado por el antivirus");
-                    player.Position.xcoordinate = player.Entrance.xcoordinate;
-                    player.Position.ycoordinate = player.Entrance.ycoordinate;
+                    //lanza el 90% de probabilidad de ser limpiado por el antivirus
+                    Random rnd = new Random();
+                    int probability = rnd.Next(0, 11);
+
+                    if (probability == 5)
+                    {
+                        Interface.Interface.Writing("Mala suerte, a pesar de su condicion de Troyano, el antivirus ha detectado su presencia");
+                        Interface.Interface.Writing($"EL jugador {player.Token} ha sido eliminado por el antivirus");
+                        player.Position.xcoordinate = player.Entrance.xcoordinate;
+                        player.Position.ycoordinate = player.Entrance.ycoordinate;
+                        player.USkill = player.Skill = false;
+                    }
+                    else
+                    {
+                        Interface.Interface.Writing($"El jugador {player.Token} ha sobrevivido a la limpieza dada que su personaje es del tipo Troyano");
+                        player.USkill = player.Skill = false;
+                    }
+
+                    player.ActualType = "";
                 }
                 else
                 {
-                    Interface.Interface.Writing($"EL jugador {player.Token} ha superado la limpieza de antivirus");
+                    Random rnd = new Random();
+                    int probability = rnd.Next(0, 11);
+
+                    if (probability != 3 && probability != 7)
+                    {
+                        Interface.Interface.Writing($"EL jugador {player.Token} ha sido eliminado por el antivirus");
+                        player.Position.xcoordinate = player.Entrance.xcoordinate;
+                        player.Position.ycoordinate = player.Entrance.ycoordinate;
+                    }
+                    else
+                    {
+                        Interface.Interface.Writing($"EL jugador {player.Token} ha superado la limpieza de antivirus");
+                    }
                 }
+                
             }
             else
             {

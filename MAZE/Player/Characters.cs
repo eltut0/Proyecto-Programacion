@@ -36,14 +36,14 @@
 
             Characters spyware = new Characters();
             spyware.name = "Spyware";
-            spyware.description = "Habilidad especial: Te permite ver el mapa desbloqueado durante 3 segundos. Tiempo de refresco: 5 turnos.";
+            spyware.description = "Habilidad especial: Puede ver la zona q le rodea durante 5 segundos. Tiempo de refresco: 5 turnos.";
             spyware.speed = 2.7;
             spyware.refresh = 5;
             CharactersList.Add(spyware);
 
             Characters metamorf = new Characters();
             metamorf.name = "Metamorfico";
-            metamorf.description = "Habilidad especial: Cada vez que se cumple su tiempo de refresco puede usar una habilidad de los demas personajes, la cual se asigna de manera aleatoria. Hay una probabilidad del 10% de que no obtenga una habilidad." +
+            metamorf.description = "Habilidad especial: Cada vez que se cumple su tiempo de refresco puede usar una habilidad de los demas personajes, la cual puede elegir libremente. Hay una probabilidad del 20% de que no se le sea asignada." +
                 "Tiempo de refresco: 7 turnos.";
             metamorf.refresh = 7;
             metamorf.speed = 2.3;

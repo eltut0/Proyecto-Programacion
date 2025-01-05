@@ -9,6 +9,9 @@ namespace MAZE.Players
         //tipo de personaje
         public string Type { get; set; }
 
+        //solo aplicable para el metamorfico
+        public string ActualType { get; set; }
+
         //ficha
         public string Token { get; set; }
 
@@ -26,6 +29,12 @@ namespace MAZE.Players
 
         //habilidad especial, se puede usar o no
         public bool Skill { get; set; }
+
+        //booleano q representa q se activa el uso de la habilidad
+        public bool USkill { get; set; }
+
+        //contador para habilidad especial
+        public int SCount { get; set; }
 
         //condicion de victoria
         public bool Victory { get; set; }
@@ -132,6 +141,7 @@ namespace MAZE.Players
 
                 player.Victory = false;
                 player.Token = Tokken();
+                player.SCount = player.Refresh;
 
                 Interface.Interface.Writing($"Su ficha sera: {player.Token}");
 
@@ -180,7 +190,8 @@ namespace MAZE.Players
                     temp = Console.ReadLine();
                     Console.Clear();
 
-                    if (temp == null || temp.Length != 1)
+                    //no se puede usar 1 o 2 porque se usan para generar salidas
+                    if (temp == null || temp.Length != 1 || temp == "1" || temp == "2")
                     {
                         Interface.Interface.Writing("Seleccione un caracter valido");
 
