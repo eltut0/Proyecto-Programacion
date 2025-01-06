@@ -31,12 +31,14 @@ class Skills
         if (player.Type == "Troyano" || player.ActualType == "Troyano")
         {
             player.USkill = true;
+            Console.Clear();
             Interface.Interface.Writing($"{player.Token} ha activado su habilidad especial, tiene 90% de probabilidades de sobrevivir a la proxima limpieza de virus!");
             //la comprobacion se realiza cuando se activa el antivirus, donde se chequea si ek personaje es un troyano y si tiene activa la habilidad, entonces aplica la probabilidad de sobrevivir a la limpieza
         }
         else if (player.Type == "Gusano" || player.ActualType == "Gusano")
         {
             player.USkill = true;
+            Console.Clear();
             Interface.Interface.Writing($"{player.Token} ha activado su habilidad especial, puede atravesar una pared!");
             //la comprobacion se realiza en el momento q se comprueba el pasode casilla a casilla
         }
@@ -250,29 +252,39 @@ class Skills
 
                 ConsoleKeyInfo key = Console.ReadKey(true);
 
-                if (key.Key == ConsoleKey.D1 || key.Key == ConsoleKey.NumPad1)
+                Random rnd = new Random();
+                int probability = rnd.Next(1, 6);
+                if (probability != 3)
                 {
-                    player.ActualType = "Troyano";
-                    Skill(player);
-                    break;
+                    if (key.Key == ConsoleKey.D1 || key.Key == ConsoleKey.NumPad1)
+                    {
+                        player.ActualType = "Troyano";
+                        Skill(player);
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.D2 || key.Key == ConsoleKey.NumPad2)
+                    {
+                        player.ActualType = "Gusano";
+                        Skill(player);
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.D3 || key.Key == ConsoleKey.NumPad3)
+                    {
+                        player.ActualType = "Spyware";
+                        Skill(player);
+                        break;
+                    }
+                    else if (key.Key == ConsoleKey.D4 || key.Key == ConsoleKey.NumPad4)
+                    {
+                        player.ActualType = "Reboot";
+                        Skill(player);
+                        break;
+                    }
                 }
-                else if (key.Key == ConsoleKey.D2 || key.Key == ConsoleKey.NumPad2)
+                else
                 {
-                    player.ActualType = "Gusano";
-                    Skill(player);
-                    break;
-                }
-                else if (key.Key == ConsoleKey.D3 || key.Key == ConsoleKey.NumPad3)
-                {
-                    player.ActualType = "Spyware";
-                    Skill(player);
-                    break;
-                }
-                else if (key.Key == ConsoleKey.D4 || key.Key == ConsoleKey.NumPad4)
-                {
-                    player.ActualType = "Reboot";
-                    Skill(player);
-                    break;
+                    Interface.Interface.Writing("Ha fallado la asignacion de una habilidad especial");
+                    player.Skill = false;
                 }
             } while (true);
         }

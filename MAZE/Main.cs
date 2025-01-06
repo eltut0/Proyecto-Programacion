@@ -6,14 +6,21 @@ public class Program
 {
     //contador de turnos
     public static int Turns { get; set; }
+
+    //booleano para romper el bucle del juego
+    public static bool Break {  get; set; }
+
     public static void Main(string[] args)
     {
+
+        Console.Clear();
+        //muestra la info inicial(definir en su respectiva clase)
+        Interface.Interface.Tittle();
+
         do
         {
-            Console.Clear();
-            //muestra la info inicial(definir en su respectiva clase)
-            Interface.Interface.Tittle();
-            Interface.Interface.BeginnerInfo();
+            //llama al menu de inicio
+            Menu.MainMenu();
 
             //pide el ingreso de la dimension del laberinto
             Usefulmethods.MazeGetDim();
@@ -53,6 +60,12 @@ public class Program
                 //buclea del turno de jugador 1
                 Gameplay.Turn(player1, player2, Turns, moves, turnmoves, true);
 
+                //valora el posible cierre de la partida
+                if (Break)
+                {
+                    break;
+                }
+
                 if (player1.Victory)
                 {
                     break;
@@ -75,6 +88,12 @@ public class Program
 
                 //buclea del turno de jugador 2 intercambiando los parametros con respecto a la primera llamada para q el metodo interprete al segundo jugador como el personable jugable
                 Gameplay.Turn(player2, player1, Turns, moves, turnmoves, false);
+
+                //valora el posible cierre de la partida
+                if (Break)
+                {
+                    break;
+                }
 
                 if (player2.Victory)
                 {
@@ -102,18 +121,23 @@ public class Program
             {
                 Interface.Interface.Writing($"Felicidades {player1.Token}, ha infectado el ordenador primero que su oponente y ha resultado ganador");
             }
-            else
+            else if (player2.Victory)
             {
                 Interface.Interface.Writing($"Felicidades {player2.Token}, ha infectado el ordenador primero que su oponente y ha resultado ganador");
             }
 
-            //annadir una salida del juego o repetir la partida
+            //una vez q termina una partida se vacian los valores de las variables importantes para q no haya inconvenientes
+            Objects.Objects.Objectslist.Clear();
+            Player.PlayerList.Clear();
+
+            //reasignar false para q no se vuelva a detener el programa
+            Break = false;
+
         } while (true);
     }
 }
 
 //pendientes:
-//casilla de guardado fantasma
 
 //resuelto:
-//hablidades especiales activadas
+//menus implementados

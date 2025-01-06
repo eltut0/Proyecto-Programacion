@@ -64,13 +64,23 @@ namespace MAZE.Players
                 //crea la salida aleatoria q sera mostrada una vez q el jugador alcance los 5 archivos
                 do
                 {
-                    player.Exit = new Position();
-                    player.Exit.xcoordinate = GenerateMaze.RandomCoordinate();
-                    player.Exit.ycoordinate = GenerateMaze.RandomCoordinate();
+                    do
+                    {
+                        player.Exit = new Position();
+                        player.Exit.xcoordinate = GenerateMaze.RandomCoordinate();
+                        player.Exit.ycoordinate = GenerateMaze.RandomCoordinate();
 
-                    var temp = PlayerList.Find(c => c.Exit.xcoordinate == player.Exit.xcoordinate && c.Exit.ycoordinate == player.Exit.ycoordinate);
+                        var temp = PlayerList.Find(c => c.Exit.xcoordinate == player.Exit.xcoordinate && c.Exit.ycoordinate == player.Exit.ycoordinate);
 
-                    if (temp == null)
+                        if (temp == null)
+                        {
+                            break;
+                        }
+                    } while (true);
+
+                    var temp2 = Objects.Objects.Objectslist.Find(c => c.position.xcoordinate == player.Exit.xcoordinate && c.position.ycoordinate == player.Exit.ycoordinate);
+
+                    if (temp2 == null)
                     {
                         break;
                     }

@@ -152,6 +152,12 @@ public class Gameplay
                     }
                 }
 
+                //menu de pausa
+                else if (key.Key == ConsoleKey.Escape)
+                {
+                    Menu.Pause();
+                }
+
                 CheckBox(player1, false);
 
                 if (player1.Victory)
