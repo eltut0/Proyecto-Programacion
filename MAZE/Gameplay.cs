@@ -28,14 +28,14 @@ public class Gameplay
             if (Change)
             {
                 //info en pantalla
-                Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
-                MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
+                Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves, Change);
+                GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                 Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
             }
             else
             {
                 //info en pantalla
-                Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves);
+                Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves, Change);
                 MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                 Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
             }
@@ -49,17 +49,7 @@ public class Gameplay
             else
             {
                 //limpiar la cola de caracteres para el readkey q importa
-                do
-                {
-                    if (Console.KeyAvailable)
-                    {
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                } while (true);
+                Usefulmethods.CleanQueue();
 
                 //readkey para movimiento
                 ConsoleKeyInfo key = Console.ReadKey(true);
@@ -174,7 +164,7 @@ public class Gameplay
                         turns++;
                         Console.Clear();
                         //info en pantalla
-                        Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves);
+                        Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves, Change);
                         GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                         Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
                         Thread.Sleep(200);
@@ -189,7 +179,7 @@ public class Gameplay
                         turns++;
                         Console.Clear();
                         //info en pantalla
-                        Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves);
+                        Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves, Change);
                         GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                         Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
                         Thread.Sleep(200);

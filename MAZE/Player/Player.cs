@@ -104,56 +104,28 @@ namespace MAZE.Players
 
                 } while (true);
 
-                Interface.Interface.Writing($"Jugador {i + 1}:");
                 do
                 {
-                    Interface.Interface.Writing("Elija su tipo de personaje, marque la tecla correspondiente para ver su informacion, y despues elija si desea usarlo o escoger otro.");
-                    Interface.Interface.WritingWOReadKey("1.Troyano, 2.Gusano, 3.Spyware, 4.Reboot, 5.Metamorfico");
+                    Menu.SelectCh(player, i+1);
 
-                    ConsoleKeyInfo key = Console.ReadKey(true);
-                    Console.Clear();
+                    player.Victory = false;
+                    player.Token = Tokken(i+1);
+                    player.SCount = player.Refresh;
 
-                    if (key.Key == ConsoleKey.NumPad1 || key.Key == ConsoleKey.D1)
-                    {
-                        player = PlayerTypeSelect("Troyano", player);
-                    }
-                    else if (key.Key == ConsoleKey.NumPad2 || key.Key == ConsoleKey.D2)
-                    {
-                        player = PlayerTypeSelect("Gusano", player);
-                    }
-                    else if (key.Key == ConsoleKey.NumPad3 || key.Key == ConsoleKey.D3)
-                    {
-                        player = PlayerTypeSelect("Spyware", player);
-                    }
-                    else if (key.Key == ConsoleKey.NumPad4 || key.Key == ConsoleKey.D4)
-                    {
-                        player = PlayerTypeSelect("Reboot", player);
-                    }
-                    else if (key.Key == ConsoleKey.NumPad5 || key.Key == ConsoleKey.D5)
-                    {
-                        player = PlayerTypeSelect("Metamorfico", player);
-                    }
-                    else
-                    {
-                        Interface.Interface.Writing("Seleccione una opcion valida");
-                    }
+                    bool choice = Menu.BooleanMenu($"Su personaje es del tipo {player.Type}, su ficha sera: {player.Token}. Desea mantener esta configuracion para su personaje?");
 
-                    if (player.Type != null)
+                    if (choice)
                     {
+                        Console.Clear();
                         break;
                     }
                     else
                     {
-                        continue;
+                        //si se regresa vaciar el tipo de jugador para q no interfiera despues en el menu de seleccion
+                        player.Type = null!;
                     }
 
                 } while (true);
-
-                player.Victory = false;
-                player.Token = Tokken();
-                player.SCount = player.Refresh;
-
-                Interface.Interface.Writing($"Su ficha sera: {player.Token}");
 
                 PlayerList.Add(player);
             }
@@ -164,41 +136,36 @@ namespace MAZE.Players
         {
 
             var temp = Characters.CharactersList.Find(c => c.name == type);
-            Interface.Interface.WritingWOReadKey(temp.name);
+            Interface.Interface.WritingWOReadKey(temp!.name);
             Interface.Interface.WritingWOReadKey(temp.description);
             Interface.Interface.Writing($"La velocidad es {temp.speed}");
 
-            do
-            {
-                Interface.Interface.WritingWOReadKey("Desea usar este personaje? Marque Enter para aceptar o cualquier otra tecla para regresar.");
-                ConsoleKeyInfo key1 = Console.ReadKey(true);
-                Console.Clear();
-                if (key1.Key == ConsoleKey.Enter)
-                {
-                    player.Type = type;
-                    player.Refresh = temp.refresh;
-                    player.Speed = temp.speed;
-                    return player;
-                }
-                else
-                {
-                    return player;
-                }
+            bool choice = Menu.BooleanMenu("Desea usar este personaje? Marque Enter para aceptar o cualquier otra tecla para regresar.");
 
-            } while (true);
+            if (choice)
+            {
+                player.Type = type;
+                player.Refresh = temp.refresh;
+                player.Speed = temp.speed;
+            }
+            else
+            {
+                Console.Clear();
+            }
+
+            return player;
         }
 
         //seleccion de ficha
-        public static string Tokken()
+        public static string Tokken(int ID)
         {
             do
             {
                 string temp;
                 do
                 {
-                    Interface.Interface.WritingWOReadKey("Ingrese un caracter el cual sera su ficha en el juego, no usar emojis:");
-                    temp = Console.ReadLine();
-                    Console.Clear();
+                    Interface.Interface.WritingWOReadKey($"Jugador {ID}, ingrese un caracter el cual sera su ficha en el juego, no usar emojis:");
+                    temp = Console.ReadLine()!;
 
                     //no se puede usar 1 o 2 porque se usan para generar salidas
                     if (temp == null || temp.Length != 1 || temp == "1" || temp == "2")
@@ -216,11 +183,12 @@ namespace MAZE.Players
 
                 if (temp1 == null)
                 {
+                    Console.Clear();
                     return temp;
                 }
                 else
                 {
-                    Interface.Interface.Writing("Esa ficha esta en uso, elija otra.");
+                    Interface.Interface.Writing("Esa ficha esta en uso, elija otra");
                 }
             } while (true);
         }

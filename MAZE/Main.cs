@@ -10,6 +10,19 @@ public class Program
     //booleano para romper el bucle del juego
     public static bool Break {  get; set; }
 
+    //nuevo juego, de lo contrario salta directo a jugar
+    public static bool NewGame { get; set; }
+
+    //variables principales de la partida
+
+    public static int turnmoves;
+
+    public static int[] moves = new int[2];
+
+    public static Player player1;
+
+    public static Player player2;
+
     public static void Main(string[] args)
     {
 
@@ -22,23 +35,31 @@ public class Program
             //llama al menu de inicio
             Menu.MainMenu();
 
-            //pide el ingreso de la dimension del laberinto
-            Usefulmethods.MazeGetDim();
+            //recopila la informacion del principio solo si es un juego nuevo, de lo contrario se lee la info del txt y salta directamente al comienzo
+            if (NewGame)
+            {
 
-            //llama al metodo de creacion de mapas tras obtener una dimension valida
-            GenerateMaze.Start();
+                //pide el ingreso de la dimension del laberinto
+                Menu.SelectD();
 
-            //almacenar personajes en lista para dar lugar a la creacion de los jugadores
-            MAZE.Players.Characters.Createcharacters();
-            MAZE.Players.Player.CreatePlayer();
+                //llama al metodo de creacion de mapas tras obtener una dimension valida
+                GenerateMaze.Start();
 
-            var player1 = Player.PlayerList.FirstOrDefault();
-            var player2 = Player.PlayerList.Skip(1).FirstOrDefault();
+                //almacenar personajes en lista para dar lugar a la creacion de los jugadores
+                Characters.Createcharacters();
+                Player.CreatePlayer();
 
-            //entero q representa la cantidad de turnos completos
-            int turnmoves;
-            Turns = 0;
-            int[] moves = new int[2];
+                player1 = Player.PlayerList.FirstOrDefault()!;
+                player2 = Player.PlayerList.Skip(1).FirstOrDefault()!;
+
+                //inicia con 0 turnos
+                Turns = 0;
+            }
+
+            else
+            {
+                //realiza una lectura del txt y asigna los respectivos valores a las variables llamando al metodo
+            }
 
             //bucle principal del juego
             do
@@ -129,6 +150,8 @@ public class Program
             //una vez q termina una partida se vacian los valores de las variables importantes para q no haya inconvenientes
             Objects.Objects.Objectslist.Clear();
             Player.PlayerList.Clear();
+            player1 = null;
+            player2 = null;
 
             //reasignar false para q no se vuelva a detener el programa
             Break = false;

@@ -205,7 +205,7 @@ namespace Interface
         }
 
         //tabla de info
-        public static void InfoTable(Player player1, Player player2, int turno, int[] dices, int moves)
+        public static void InfoTable(Player player1, Player player2, int turno, int[] dices, int moves, bool change)
         {
             Table table = new Table();
 
@@ -215,9 +215,17 @@ namespace Interface
             table.AddColumn("Turnos hasta limpieza de virus");
             table.AddColumns("Dados");
             table.AddColumns("Movimientos restantes");
+            table.AddColumns("Turno actual");
             table.AddRow("Tipo de virus", player1.Type, player2.Type);
-            table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves));
 
+            if (change) 
+            {
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player1.Token);
+            }
+            else
+            {
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player2.Token);
+            }
 
             if (!player1.Skill && !player2.Skill)
             {
