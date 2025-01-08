@@ -39,7 +39,7 @@ namespace Objects
             }
         }
 
-        //defino 10 checkpoints aleatorios por el mapa
+        //defino checkpoints aleatorios por el mapa
         public static void Checkpoints(string[,] maze)
         {
             for (int i = 0; i < GenerateMaze.size / 2; i++)
@@ -68,7 +68,7 @@ namespace Objects
 
         }
 
-        //annadir 7 tampas del tipo DESCONEXION
+        //annadir tampas del tipo DESCONEXION
         public static void DesconnectionTrap(string[,] maze)
         {
             for (int i = 0; i < GenerateMaze.size / 5; i++)
@@ -94,7 +94,7 @@ namespace Objects
             }
         }
 
-        //annadir 7 trampas del tipo REDISTRIBUCION
+        //annadir trampas del tipo REDISTRIBUCION
         public static void RedistributionTrap(string[,] maze)
         {
             for (int i = 0; i < GenerateMaze.size / 5; i++)
@@ -120,7 +120,7 @@ namespace Objects
             }
         }
 
-        //annadir 7 trampas del tipo DESCONEXION
+        //annadir trampas del tipo DESCONEXION
         public static void FormattingTrap(string[,] maze)
         {
             for (int i = 0; i < GenerateMaze.size / 5; i++)

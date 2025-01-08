@@ -23,7 +23,7 @@ namespace MAZE.Map
         public static void Start()
         {
             //genera el mapa y genera los personajes
-            truemap = MapCreation.MapCreate(GeneratingMaze());
+            truemap = MapCreate(GeneratingMaze());
 
             //laberinto q sera mostrado en pantalla totlmente bloqueado
             map = Maze();
@@ -260,14 +260,6 @@ namespace MAZE.Map
                     if (Stack.Count != 0)
                     {
                         var probando = Stack.Peek();
-                        /*
-                        //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-                        Console.Clear();
-                        maze[probando.xcoordinate, probando.ycoordinate] = "E";
-                        Interface.Interface.Printing(maze);
-                        Thread.Sleep(200);
-                        maze[probando.xcoordinate, probando.ycoordinate] = " ";
-                        //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr*/
                     }
                 }
                 else
@@ -289,21 +281,6 @@ namespace MAZE.Map
                             maze[temp.xcoordinate, temp.ycoordinate] = " ";
                             maze[temp.xcoordinate, temp.ycoordinate - 1] = " ";
                         }
-
-
-
-                        /*
-                        //borrarrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr
-
-                        Console.Clear();
-                        maze[temp.xcoordinate, temp.ycoordinate] = "E";
-                        Interface.Interface.Printing(maze);
-                        Thread.Sleep(200);
-                        maze[temp.xcoordinate, temp.ycoordinate] = " "; //hasta aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii*/
-
-
-
-
                     }
                     //este-oeste
                     else
@@ -318,26 +295,10 @@ namespace MAZE.Map
                             maze[temp.xcoordinate, temp.ycoordinate] = " ";
                             maze[temp.xcoordinate - 1, temp.ycoordinate] = " ";
                         }
-
-
-
-
-                        /*
-                        //probandooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo
-                        Console.Clear();
-                        maze[temp.xcoordinate, temp.ycoordinate] = "E";
-                        Interface.Interface.Printing(maze);
-                        Thread.Sleep(200);
-                        maze[temp.xcoordinate, temp.ycoordinate] = " ";
-
-                        //probadnooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo*/
                     }
                     List.Add(temp);
                     Stack.Push(temp);
                 }
-
-
-
 
             } while (Stack.Count > 0);
 
@@ -423,6 +384,17 @@ namespace MAZE.Map
                 } while (true);
             }
 
+        }
+
+        public static string[,] MapCreate(string[,] maze)
+        {
+            Objects.Objects.Archive(maze);
+            Objects.Objects.Checkpoints(maze);
+            Objects.Objects.DesconnectionTrap(maze);
+            Objects.Objects.RedistributionTrap(maze);
+            Objects.Objects.FormattingTrap(maze);
+
+            return maze;
         }
     }
 }

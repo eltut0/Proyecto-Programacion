@@ -46,11 +46,12 @@ class Skills
         {
             string[,] temp = new string[GenerateMaze.size, GenerateMaze.size];
 
+            //le da al mapa del spyware la misma forma del mapa q ya tienen
             for (int i = 0; i < GenerateMaze.size; i++)
             {
                 for (int j = 0; j < GenerateMaze.size; j++)
                 {
-                    temp[i, j] = "?";
+                    temp[i,j] = GenerateMaze.map[i,j];
                 }
             }
 
@@ -234,59 +235,8 @@ class Skills
         {
             Console.Clear();
             Interface.Interface.Writing($"Jugador {player.Token}, como es del tipo metamorfico, debe elegir una habilidad especial");
-            Interface.Interface.WritingWOReadKey("1.Troyano, 2.Gusano, 3.Spyware, 4.Reboot");
 
-            do
-            {
-                do
-                {
-                    if (Console.KeyAvailable)
-                    {
-                        Console.ReadKey();
-                    }
-                    else
-                    {
-                        break;
-                    }
-                } while (true);
-
-                ConsoleKeyInfo key = Console.ReadKey(true);
-
-                Random rnd = new Random();
-                int probability = rnd.Next(1, 6);
-                if (probability != 3)
-                {
-                    if (key.Key == ConsoleKey.D1 || key.Key == ConsoleKey.NumPad1)
-                    {
-                        player.ActualType = "Troyano";
-                        Skill(player);
-                        break;
-                    }
-                    else if (key.Key == ConsoleKey.D2 || key.Key == ConsoleKey.NumPad2)
-                    {
-                        player.ActualType = "Gusano";
-                        Skill(player);
-                        break;
-                    }
-                    else if (key.Key == ConsoleKey.D3 || key.Key == ConsoleKey.NumPad3)
-                    {
-                        player.ActualType = "Spyware";
-                        Skill(player);
-                        break;
-                    }
-                    else if (key.Key == ConsoleKey.D4 || key.Key == ConsoleKey.NumPad4)
-                    {
-                        player.ActualType = "Reboot";
-                        Skill(player);
-                        break;
-                    }
-                }
-                else
-                {
-                    Interface.Interface.Writing("Ha fallado la asignacion de una habilidad especial");
-                    player.Skill = false;
-                }
-            } while (true);
+            Menu.MetamorficChMenu(player);
         }
     }
 }

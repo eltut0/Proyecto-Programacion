@@ -21,11 +21,12 @@ namespace Interface
         //muestra infomracion importante para el jugador y se corre al principio
         public static void BeginnerInfo()
         {
-            string info1 = "El juego consiste en intentar infectar un ordenador primero que el contrario.";
+            string info0 = "Puedes saltar la iteracion del texto pulsando Enter.";
+            string info1 = "Eres un virus en los 70's y tu objetivo es intentar infectar un ordenador primero que el contrario.";
             string info2 = "Para ello, los jugadores se moveran por turnos, lanzando dados. El personaje podra moverse, como maximo, la cantidad de la diferencia entre ambos dados, multiplicada por la velocidad de su personaje.";
             string info3 = "El tablero comenzara totalmente bloqueado, y segun avancen, las casillas adyacentes se iran desbloqueando.";
             string info4 = "El objetivo principal, sera recolectar 5 archivos (i) de los esparcidos por el tablero, y una vez haya recogido dicha cantidad, se generara una salida aleatoria en el tablero.";
-            string info5 = "La salida que se genere sera exclusivamente para el jugador que logro recolectar los archivos, y una vez que la alcance, el jugador gana la partida.";
+            string info5 = "La salida que se genere sera exclusivamente para el jugador que logro recolectar los archivos, y una vez que la alcance, el jugador gana la partida. Para el Jugador 1 es un 1 en rojo, y para el Jugador 2 es un 2 en rojo.";
             string info6 = "Cada 8 turnos, se hara una limpieza de virus en el tablero, y los jugadores deberan estar posicionados en casillas seguras (O), o tienen un 80% de probabilidad de ser devueltos al principio del tablero.";
             string info7 = "Las trampas esparcidas en el tablero no se pueden ver, algunas se activan cuando pasas sobre ellas, y otras solo cuando el personaje descansa sobre una.";
             string info8 = "La trampa Desconexion se activa cuando se pasa sobre ella, con una probabilidad del 75%, y hace al jugador perder el resto del turno, una vez que se cae en ella se desactiva para siempre.";
@@ -35,7 +36,7 @@ namespace Interface
             string info12 = "Siempre puede pulsar Esc en la partida para acceder al menu de pausa";
             string info13 = "De momento te bastara con esto para comenzar, buena suerte infectando!";
             //annado los textos del tutorial y la info del juego a un arreglo y voy escribiendolas una por una
-            string[] strings = { info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11, info12, info13 };
+            string[] strings = { info0, info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11, info12, info13 };
 
             foreach (string info in strings)
             {
@@ -46,17 +47,8 @@ namespace Interface
         //escribe con un retraso pa que quede tiza
         public static void Writing(string info)
         {
-            do
-            {
-                if (Console.KeyAvailable)
-                {
-                    Console.ReadKey(true);
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
+            Console.Clear();
+            Usefulmethods.CleanQueue();
 
             for (int j = 0; j < info.Length; j++)
             {
@@ -74,24 +66,36 @@ namespace Interface
                 }
                 Thread.Sleep(25);
             }
-            Console.WriteLine();
-            Tips.Tips1();
+            Console.Clear();
 
             do
             {
-                if (Console.KeyAvailable)
+                Usefulmethods.CleanQueue();
+                do
                 {
-                    Console.ReadKey(true);
-                }
-                else
-                {
-                    break;
-                }
-            } while (true);
+                    RegularMarkup(info);
+                    RegularMarkup("Continuar");
+                    Thread.Sleep(150);
+                    Console.Clear();
 
-            do
-            {
+                    if (Console.KeyAvailable)
+                    {
+                        break;
+                    }
+
+                    RegularMarkup(info);
+                    MarkupWhiteBack("Continuar");
+                    Thread.Sleep(150);
+                    Console.Clear();
+
+                    if (Console.KeyAvailable)
+                    {
+                        break;
+                    }
+                } while (true);
+
                 ConsoleKeyInfo key = Console.ReadKey(true);
+
                 if (key.Key == ConsoleKey.Enter)
                 {
                     break;
@@ -220,11 +224,11 @@ namespace Interface
 
             if (change) 
             {
-                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player1.Token);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player1.PlayerN + ": " + player1.Token);
             }
             else
             {
-                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player2.Token);
+                table.AddRow("Archivos recogidos", Convert.ToString(player1.Archives), Convert.ToString(player2.Archives), Convert.ToString(Gameplay.VCleaning - (turno % Gameplay.VCleaning)), $"{dices[0]}, {dices[1]}", Convert.ToString(moves), player2.PlayerN + ": " + player2.Token);
             }
 
             if (!player1.Skill && !player2.Skill)
@@ -256,15 +260,6 @@ namespace Interface
         public static void MarkupWhiteBack(string text)
         {
             AnsiConsole.MarkupLine($"[black on green]{text}[/]");
-        }
-
-        //printea tips para el jugador
-        public class Tips
-        {
-            public static void Tips1()
-            {
-                AnsiConsole.MarkupLine("[green]Pulse Enter para continuar[/]");
-            }
         }
     }
 }

@@ -6,6 +6,10 @@ namespace MAZE.Players
     {
         //lista para guardar la info de los jugadores
         public static List<Player> PlayerList = new List<Player>();
+
+        //define si es el 1 o el 2
+        public string PlayerN { get; set; }
+
         //tipo de personaje
         public string Type { get; set; }
 
@@ -60,6 +64,7 @@ namespace MAZE.Players
                 Player player = new Player();
                 player.Archives = 0;
                 player.Skill = false;
+                player.PlayerN = $"Jugador {i + 1}";
 
                 //crea la salida aleatoria q sera mostrada una vez q el jugador alcance los 5 archivos
                 do
@@ -136,11 +141,9 @@ namespace MAZE.Players
         {
 
             var temp = Characters.CharactersList.Find(c => c.name == type);
-            Interface.Interface.WritingWOReadKey(temp!.name);
-            Interface.Interface.WritingWOReadKey(temp.description);
-            Interface.Interface.Writing($"La velocidad es {temp.speed}");
+            Interface.Interface.Writing($"{temp!.name}: {temp.description}, La velocidad es {temp.speed}");
 
-            bool choice = Menu.BooleanMenu("Desea usar este personaje? Marque Enter para aceptar o cualquier otra tecla para regresar.");
+            bool choice = Menu.BooleanMenu("Desea usar este personaje?");
 
             if (choice)
             {

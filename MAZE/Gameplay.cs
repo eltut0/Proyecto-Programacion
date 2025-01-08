@@ -11,6 +11,9 @@ public class Gameplay
     //booleano para abortar turno
     public static bool Stop { get; set; }
 
+    //booleano para salir al menu sin q salga "su turno ha terminado"
+    public static bool Leaving { get; set; }
+
     //retorna los valores de dos dados
     public static int[] Dices()
     {
@@ -19,8 +22,24 @@ public class Gameplay
         return dices;
     }
 
+    //tirar los dados y calular los movimientos
+    public static void Moves()
+    {
+        Program.moves = Dices();
+
+        //hacer positivo el resultado
+        if (Program.moves[0] >= Program.moves[1])
+        {
+            Program.turnmoves = Convert.ToInt32((Program.moves[0] - Program.moves[1]) * Program.player1.Speed);
+        }
+        else
+        {
+            Program.turnmoves = Convert.ToInt32((Program.moves[1] - Program.moves[0]) * Program.player1.Speed);
+        }
+    }
+
     //desarrolla el turno de un jugador
-    public static void Turn(Player player1, Player player2, int turns, int[] moves, int turnmoves, bool Change)
+    public static void Turn(Player player1, Player player2, int turns, int[] moves,  bool Change)
     {
         do
         {
@@ -28,19 +47,19 @@ public class Gameplay
             if (Change)
             {
                 //info en pantalla
-                Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves, Change);
+                Interface.Interface.InfoTable(player1, player2, turns, moves, Program.turnmoves, Change);
                 GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                 Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
             }
             else
             {
                 //info en pantalla
-                Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves, Change);
+                Interface.Interface.InfoTable(player2, player1, turns, moves, Program.turnmoves, Change);
                 MAZE.Map.GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                 Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
             }
 
-            if (turnmoves == 0)
+            if (Program.turnmoves == 0)
             {
                 Console.Clear();
                 Interface.Interface.Writing("Lamentablemente sus dados dieron un doble, no podra moverse este turno.");
@@ -59,13 +78,13 @@ public class Gameplay
                     if (GenerateMaze.map[player1.Position.xcoordinate, player1.Position.ycoordinate - 1] != "#")
                     {
                         player1.Position.ycoordinate -= 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                     }
                     //comprobacion para habilidad de gusano
                     else if (player1.Type == "Gusano" && player1.USkill && player1.Position.ycoordinate - 2 > 0 || player1.ActualType == "Gusano" && player1.USkill && player1.Position.ycoordinate - 2 > 0)
                     {
                         player1.Position.ycoordinate -= 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                         player1.Skill = false;
                         player1.USkill = false;
                         player1.ActualType = "";
@@ -77,13 +96,13 @@ public class Gameplay
                     if (GenerateMaze.map[player1.Position.xcoordinate, player1.Position.ycoordinate + 1] != "#")
                     {
                         player1.Position.ycoordinate += 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                     }
                     //comprobacion para habilidad de gusano
                     else if (player1.Type == "Gusano" && player1.USkill && player1.Position.ycoordinate + 2 < GenerateMaze.size || player1.ActualType == "Gusano" && player1.USkill && player1.Position.ycoordinate + 2 < GenerateMaze.size)
                     {
                         player1.Position.ycoordinate += 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                         player1.Skill = false;
                         player1.USkill = false;
                         player1.ActualType = "";
@@ -95,13 +114,13 @@ public class Gameplay
                     if (GenerateMaze.map[player1.Position.xcoordinate - 1, player1.Position.ycoordinate] != "#")
                     {
                         player1.Position.xcoordinate -= 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                     }
                     //comprobacion para habilidad de gusano
                     else if (player1.Type == "Gusano" && player1.USkill && player1.Position.xcoordinate - 2 > 0 || player1.ActualType == "Gusano" && player1.USkill && player1.Position.xcoordinate - 2 > 0)
                     {
                         player1.Position.xcoordinate -= 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                         player1.Skill = false;
                         player1.USkill = false;
                         player1.ActualType = "";
@@ -113,13 +132,13 @@ public class Gameplay
                     if (GenerateMaze.map[player1.Position.xcoordinate + 1, player1.Position.ycoordinate] != "#")
                     {
                         player1.Position.xcoordinate += 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                     }
                     //comprobacion para habilidad de gusano
                     else if (player1.Type == "Gusano" && player1.USkill && player1.Position.xcoordinate + 2 < GenerateMaze.size || player1.ActualType == "Gusano" && player1.USkill && player1.Position.xcoordinate + 2 < GenerateMaze.size)
                     {
                         player1.Position.xcoordinate += 2;
-                        turnmoves--;
+                        Program.turnmoves--;
                         player1.Skill = false;
                         player1.USkill = false;
                         player1.ActualType = "";
@@ -145,18 +164,20 @@ public class Gameplay
                 //menu de pausa
                 else if (key.Key == ConsoleKey.Escape)
                 {
-                    Menu.Pause();
+                    Menu.Pause(Change);
                 }
 
                 CheckBox(player1, false);
 
-                if (player1.Victory)
+                if (player1.Victory || Leaving)
                 {
+                    Leaving = false;
                     break;
                 }
 
-                else if (turnmoves <= 0 || Stop)
+                else if (Program.turnmoves <= 0 || Stop)
                 {
+                    //se finaliza con una condicional para tener en cuenta la posicion de los datos en la tabla dado q se llama al mismo metodo en ambos turnos y es necesario cambiar el orden
                     if (Change)
                     {
                         //termina el turno del jugador y aumenta la cantidad de turnos
@@ -164,7 +185,7 @@ public class Gameplay
                         turns++;
                         Console.Clear();
                         //info en pantalla
-                        Interface.Interface.InfoTable(player1, player2, turns, moves, turnmoves, Change);
+                        Interface.Interface.InfoTable(player1, player2, turns, moves, Program.turnmoves, Change);
                         GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                         Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
                         Thread.Sleep(200);
@@ -179,7 +200,7 @@ public class Gameplay
                         turns++;
                         Console.Clear();
                         //info en pantalla
-                        Interface.Interface.InfoTable(player2, player1, turns, moves, turnmoves, Change);
+                        Interface.Interface.InfoTable(player2, player1, turns, moves, Program.turnmoves, Change);
                         GenerateMaze.ModMaze(player1.Position, GenerateMaze.map, GenerateMaze.truemap);
                         Interface.Interface.PrintMaze(GenerateMaze.map, GenerateMaze.truemap, player1, player2);
                         Thread.Sleep(200);

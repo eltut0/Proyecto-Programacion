@@ -1,11 +1,9 @@
 ﻿using MAZE.Map;
 using MAZE.Players;
-using Spectre.Console;
-using System;
 public class Program
 {
     //contador de turnos
-    public static int Turns { get; set; }
+    public static int Turns;
 
     //booleano para romper el bucle del juego
     public static bool Break {  get; set; }
@@ -15,17 +13,22 @@ public class Program
 
     //variables principales de la partida
 
-    public static int turnmoves;
+    public static int turnmoves { get; set; }
 
-    public static int[] moves = new int[2];
+    public static int[] moves { get; set; }
 
-    public static Player player1;
+    //bool para diferenciar entre partida cargada
+    public static bool LoadedGame { get; set; }
 
-    public static Player player2;
+    //bool para saltar al segndo turno
+    public static bool Jump {  get; set; }
+
+    public static Player player1 { get; set;}
+
+    public static Player player2 { get; set;}
 
     public static void Main(string[] args)
     {
-
         Console.Clear();
         //muestra la info inicial(definir en su respectiva clase)
         Interface.Interface.Tittle();
@@ -49,74 +52,74 @@ public class Program
                 Characters.Createcharacters();
                 Player.CreatePlayer();
 
-                player1 = Player.PlayerList.FirstOrDefault()!;
-                player2 = Player.PlayerList.Skip(1).FirstOrDefault()!;
-
-                //inicia con 0 turnos
                 Turns = 0;
+
+                //ni idea pero asi funciona
+                Jump = true;
             }
 
             else
             {
                 //realiza una lectura del txt y asigna los respectivos valores a las variables llamando al metodo
+                SaveGame.LoadGame();
+                LoadedGame = true;
             }
+
+            //lee de las lista, dado q del metodo de carga de juego tambien se carga directo a la lista
+            player1 = Player.PlayerList.FirstOrDefault()!;
+            player2 = Player.PlayerList.Skip(1).FirstOrDefault()!;
 
             //bucle principal del juego
             do
             {
-                //turno jugador 1 waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-                Interface.Interface.Writing("Jugador 1, lance los dados");
-                moves = Gameplay.Dices();
 
-                //hacer positivo el resultado
-                if (moves[0] >= moves[1])
+                if (Jump)
                 {
-                    turnmoves = Convert.ToInt32((moves[0] - moves[1]) * player1.Speed);
-                }
-                else
-                {
-                    turnmoves = Convert.ToInt32((moves[1] - moves[0]) * player1.Speed);
-                }
+                    //salta la nueva asignacion de valores de movimientos en caso de q se haya cargado una partida
+                    if (!LoadedGame)
+                    {
+                        //turno jugador 1 waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                        Interface.Interface.Writing("Jugador 1, lance los dados");
 
-                //buclea del turno de jugador 1
-                Gameplay.Turn(player1, player2, Turns, moves, turnmoves, true);
+                        Gameplay.Moves();
+                    }
 
-                //valora el posible cierre de la partida
-                if (Break)
-                {
-                    break;
-                }
+                    //reasigna el false a loaded game para q no se salte futuras condiciones
+                    LoadedGame = false;
 
-                if (player1.Victory)
-                {
-                    break;
+                    //buclea del turno de jugador 1
+                    Gameplay.Turn(player1, player2, Turns, moves, true);
+
+                    //valora el posible cierre de la partida
+                    if (Break || player1.Victory)
+                    {
+                        break;
+                    }
                 }
+                  
+                //le asigna false a jump por si las dudas
+                
+                Jump = true;
 
                 //turno jugador 2 waaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
-                Interface.Interface.Writing("Jugador 2, lance los dados");
-                moves = Gameplay.Dices();
+                if (!LoadedGame)
+                {
+                    Interface.Interface.Writing("Jugador 2, lance los dados");
 
-                //hacer positivo el resultado
-                if (moves[0] >= moves[1])
-                {
-                    turnmoves = Convert.ToInt32((moves[0] - moves[1]) * player2.Speed);
+                    Gameplay.Moves();
                 }
-                else
-                {
-                    turnmoves = Convert.ToInt32((moves[1] - moves[0]) * player2.Speed);
-                }
+
+                //reasigna el false a loaded game para q no se salte futuras condiciones
+                LoadedGame = false;
 
                 //buclea del turno de jugador 2 intercambiando los parametros con respecto a la primera llamada para q el metodo interprete al segundo jugador como el personable jugable
-                Gameplay.Turn(player2, player1, Turns, moves, turnmoves, false);
 
+                Gameplay.Turn(player2, player1, Turns, moves, false);
+                
                 //valora el posible cierre de la partida
-                if (Break)
-                {
-                    break;
-                }
-
-                if (player2.Victory)
+                
+                if (Break || player2.Victory)
                 {
                     break;
                 }
@@ -148,10 +151,7 @@ public class Program
             }
 
             //una vez q termina una partida se vacian los valores de las variables importantes para q no haya inconvenientes
-            Objects.Objects.Objectslist.Clear();
-            Player.PlayerList.Clear();
-            player1 = null;
-            player2 = null;
+            Usefulmethods.Clear();
 
             //reasignar false para q no se vuelva a detener el programa
             Break = false;
@@ -163,4 +163,5 @@ public class Program
 //pendientes:
 
 //resuelto:
-//menus implementados
+//menus mejorados
+//sistema de guardado implementado
