@@ -8,22 +8,25 @@ namespace MAZE.Players
         public static List<Player> PlayerList = new List<Player>();
 
         //define si es el 1 o el 2
-        public string PlayerN { get; set; }
+        public string? PlayerN { get; set; }
 
         //tipo de personaje
-        public string Type { get; set; }
+        public string? Type { get; set; }
+
+        //nooleano para distinguir entre IA
+        public bool? IMBot { get; set; }
 
         //solo aplicable para el metamorfico
-        public string ActualType { get; set; }
+        public string? ActualType { get; set; }
 
         //ficha
-        public string Token { get; set; }
+        public string? Token { get; set; }
 
         //posicion actual
-        public Position Position { get; set; }
+        public Position? Position { get; set; }
 
         //posicion de inicio
-        public Position Entrance { get; set; }
+        public Position? Entrance { get; set; }
 
         //archivos recogidos
         public int Archives { get; set; }
@@ -50,21 +53,25 @@ namespace MAZE.Players
         public bool IsSafe { get; set; }
 
         //salida aleatoria generada
-        public Position Exit {  get; set; }
+        public Position? Exit {  get; set; }
 
         //caracter q representa la salida del jugador
-        public string ExitChar {  get; set; }
+        public string? ExitChar {  get; set; }
+
+        //mapa de vision de un player de IA, solo aplicable para este tipo de jugador
+        public static string[,]? IAMap {  get; set; }
 
         //se llama para crear los dos personajes
-        public static void CreatePlayer()
+        public static void CreatePlayer(int n)
         {
             //creacion de jugadores
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < n; i++)
             {
                 Player player = new Player();
                 player.Archives = 0;
                 player.Skill = false;
                 player.PlayerN = $"Jugador {i + 1}";
+                player.IMBot = false;
 
                 //crea la salida aleatoria q sera mostrada una vez q el jugador alcance los 5 archivos
                 do
@@ -75,7 +82,7 @@ namespace MAZE.Players
                         player.Exit.xcoordinate = GenerateMaze.RandomCoordinate();
                         player.Exit.ycoordinate = GenerateMaze.RandomCoordinate();
 
-                        var temp = PlayerList.Find(c => c.Exit.xcoordinate == player.Exit.xcoordinate && c.Exit.ycoordinate == player.Exit.ycoordinate);
+                        var temp = PlayerList.Find(c => c.Exit!.xcoordinate == player.Exit.xcoordinate && c.Exit.ycoordinate == player.Exit.ycoordinate);
 
                         if (temp == null)
                         {
@@ -83,7 +90,7 @@ namespace MAZE.Players
                         }
                     } while (true);
 
-                    var temp2 = Objects.Objects.Objectslist.Find(c => c.position.xcoordinate == player.Exit.xcoordinate && c.position.ycoordinate == player.Exit.ycoordinate);
+                    var temp2 = Objects.Objects.Objectslist.Find(c => c.position!.xcoordinate == player.Exit.xcoordinate && c.position.ycoordinate == player.Exit.ycoordinate);
 
                     if (temp2 == null)
                     {
@@ -97,7 +104,7 @@ namespace MAZE.Players
                 do {
                     player.Position = GenerateMaze.Entrance();
 
-                    var temp = PlayerList.Find(c  => c.Position.xcoordinate == player.Position.xcoordinate && c.Position.ycoordinate == player.Position.ycoordinate);
+                    var temp = PlayerList.Find(c  => c.Position!.xcoordinate == player.Position.xcoordinate && c.Position.ycoordinate == player.Position.ycoordinate);
 
                     if (temp == null)
                     {
@@ -170,8 +177,8 @@ namespace MAZE.Players
                     Interface.Interface.WritingWOReadKey($"Jugador {ID}, ingrese un caracter el cual sera su ficha en el juego, no usar emojis:");
                     temp = Console.ReadLine()!;
 
-                    //no se puede usar 1 o 2 porque se usan para generar salidas
-                    if (temp == null || temp.Length != 1 || temp == "1" || temp == "2")
+                    //no se puede usar 1 o 2 porque se usan para generar salidas, y la S q es el caracter de la IA
+                    if (temp == null || temp.Length != 1 || temp == "1" || temp == "2" || temp == "S" || temp == "#" || temp == "?")
                     {
                         Interface.Interface.Writing("Seleccione un caracter valido");
 

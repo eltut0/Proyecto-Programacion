@@ -8,9 +8,9 @@ namespace Objects
         public static List<Objects> Objectslist = new List<Objects>();
         //tipo
         //-Archive-Trap-Checkpoint-...
-        public string type { get; set; }
+        public string? type { get; set; }
         //coordenada del objeto
-        public Position position { get; set; }
+        public Position? position { get; set; }
 
         //distribuir los 10 archivos de forma aleatoria en el mapa, y guardar sus posiciones en la lista
         public static void Archive(string[,] maze)

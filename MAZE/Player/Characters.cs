@@ -6,10 +6,10 @@
         public static List<Characters> CharactersList = new List<Characters>();
 
         //nombre del personaje
-        public string name { get; set; }
+        public string? name { get; set; }
 
         //descripcion del personaje
-        public string description { get; set; }
+        public string? description { get; set; }
         //velocidad (se multiplica por el valor del dado)
 
         public double speed { get; set; }
@@ -22,9 +22,9 @@
         {
             Characters trojan = new Characters();
             trojan.name = "Troyano";
-            trojan.description = "Habilidad especial: Tiene 90% de probabilidad de no ser detectado durante la limpieza de virus. Tiempo de refresco: 10 turnos.";
+            trojan.description = "Habilidad especial: Tiene 90% de probabilidad de no ser detectado durante la limpieza de virus. Tiempo de refresco: 8 turnos.";
             trojan.speed = 2.5;
-            trojan.refresh = 10;
+            trojan.refresh = 8;
             CharactersList.Add(trojan);
 
             Characters worm = new Characters();
@@ -36,9 +36,9 @@
 
             Characters spyware = new Characters();
             spyware.name = "Spyware";
-            spyware.description = "Habilidad especial: Puede ver la zona q le rodea durante 5 segundos. Tiempo de refresco: 5 turnos.";
+            spyware.description = "Habilidad especial: Puede ver la zona q le rodea durante 5 segundos. Tiempo de refresco: 7 turnos.";
             spyware.speed = 2.7;
-            spyware.refresh = 5;
+            spyware.refresh = 7;
             CharactersList.Add(spyware);
 
             Characters metamorf = new Characters();

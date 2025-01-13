@@ -5,13 +5,13 @@ namespace MAZE.Map
     public class GenerateMaze
     {
         //tamanno del laberinot
-        public static int size;
+        public static int size {  get; set; }
 
         //mapa de lectura
-        public static string[,] truemap;
+        public static string[,]? truemap { get; set; }
 
         //mapa de muestreo
-        public static string[,] map;
+        public static string[,]? map {  get; set; }
 
         //pila para ir generando caminos
         public static Stack<Position> Stack = new Stack<Position>();
@@ -120,7 +120,7 @@ namespace MAZE.Map
         }
 
         //devuelve una nueva posicion para mover la posicion
-        public static Position NewWay(int x, int y)
+        public static Position NewWay(int x, int y, List<Position> visited)
         {
             int[] directions = new int[4];
             var coordinate = new Position();
@@ -134,7 +134,7 @@ namespace MAZE.Map
             //cpmprobar arreglo en 0
             if (!(y - 2 <= 0))
             {
-                var position0 = List.Find(c => c.ycoordinate == y - 2 && c.xcoordinate == x);
+                var position0 = visited.Find(c => c.ycoordinate == y - 2 && c.xcoordinate == x);
                 if (position0 != null)
                 {
                     directions[0] = -1;
@@ -148,7 +148,7 @@ namespace MAZE.Map
             //comprobar arreglo en 1
             if (!(y + 2 >= size - 1))
             {
-                var position1 = List.Find(c => c.ycoordinate == y + 2 && c.xcoordinate == x);
+                var position1 = visited.Find(c => c.ycoordinate == y + 2 && c.xcoordinate == x);
                 if (position1 != null)
                 {
                     directions[1] = -1;
@@ -162,7 +162,7 @@ namespace MAZE.Map
             //comprobar arreglo en 2
             if (!(x + 2 >= size - 1))
             {
-                var position2 = List.Find(c => c.xcoordinate == x + 2 && c.ycoordinate == y);
+                var position2 = visited.Find(c => c.xcoordinate == x + 2 && c.ycoordinate == y);
                 if (position2 != null)
                 {
                     directions[2] = -1;
@@ -176,7 +176,7 @@ namespace MAZE.Map
             //comprobar arreglo en 3
             if (!(x - 2 <= 0))
             {
-                var position3 = List.Find(c => c.xcoordinate == x - 2 && c.ycoordinate == y);
+                var position3 = visited.Find(c => c.xcoordinate == x - 2 && c.ycoordinate == y);
                 if (position3 != null)
                 {
                     directions[3] = -1;
@@ -251,7 +251,7 @@ namespace MAZE.Map
             do
             {
                 position = Stack.Peek();
-                temp = NewWay(position.xcoordinate, position.ycoordinate);
+                temp = NewWay(position.xcoordinate, position.ycoordinate, List);
 
                 if (temp.xcoordinate == -1)
                 {
@@ -335,7 +335,7 @@ namespace MAZE.Map
                     int x = RandomCoordinate();
                     int y = RandomCoordinate();
 
-                    Position temp = NewWay(x, y);
+                    Position temp = NewWay(x, y, List);
 
                     //comprueba si loq  hay entre estas dos posiciones es un muro, y si es asi lo elimina
                     if (temp.xcoordinate != -1)

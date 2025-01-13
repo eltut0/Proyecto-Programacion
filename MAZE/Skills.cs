@@ -5,7 +5,8 @@ using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography;
 
 class Skills
-{ 
+{ //matriz para q sea accesible para la IA
+    public static string[,]? tempMap {  get; set; }
     //cuenta habilidades y activa el booleano cuando se llega al final de la cuenta
     public static void CountSkills(Player player)
     {
@@ -45,17 +46,18 @@ class Skills
         else if (player.Type == "Spyware" || player.ActualType == "Spyware")
         {
             string[,] temp = new string[GenerateMaze.size, GenerateMaze.size];
+            tempMap = new string[GenerateMaze.size, GenerateMaze.size];
 
             //le da al mapa del spyware la misma forma del mapa q ya tienen
             for (int i = 0; i < GenerateMaze.size; i++)
             {
                 for (int j = 0; j < GenerateMaze.size; j++)
                 {
-                    temp[i,j] = GenerateMaze.map[i,j];
+                    temp[i,j] = GenerateMaze.map![i,j];
                 }
             }
 
-            temp[player.Position.xcoordinate, player.Position.ycoordinate] = player.Token;
+            temp[player.Position!.xcoordinate, player.Position.ycoordinate] = player.Token!;
 
             //establecemos una relacion entre la posicion del jugador y la dimension del laberinto de modo q se puedan con 4 bucles
             //comenzamos definiendo los limites, en un rango de 11 unidades
@@ -114,7 +116,7 @@ class Skills
             {
                 for (int j = y; j < ysuplim; j++)
                 {
-                    temp[i, j] = GenerateMaze.truemap[i, j];
+                    temp[i, j] = GenerateMaze.truemap![i, j];
                 }
             }
 
@@ -123,7 +125,7 @@ class Skills
             {
                 for (int j = y; j > yinflim; j--)
                 {
-                    temp[i, j] = GenerateMaze.truemap[i, j];
+                    temp[i, j] = GenerateMaze.truemap![i, j];
                 }
             }
 
@@ -132,7 +134,7 @@ class Skills
             {
                 for (int j = y; j < ysuplim; j++)
                 {
-                    temp[i, j] = GenerateMaze.truemap[i, j];
+                    temp[i, j] = GenerateMaze.truemap![i, j];
                 }
             }
 
@@ -141,13 +143,17 @@ class Skills
             {
                 for (int j = y; j > yinflim; j--)
                 {
-                    temp[i, j] = GenerateMaze.truemap[i, j];
+                    temp[i, j] = GenerateMaze.truemap![i, j];
                 }
             }
 
             Console.Clear();
             Interface.Interface.Writing($"{player.Token} ha activado su habilidad, podra ver que tiene a su alrededor durante 5 segundos!");
             Interface.Interface.PrintMaze(temp, temp, player, player);
+
+            //asigna temporalmente el mapa a la variable esstatica
+            tempMap = temp;
+
             Thread.Sleep(5000);
             Console.Clear();
 
@@ -161,11 +167,11 @@ class Skills
             {
                 for (int j = 0; j < GenerateMaze.size; j++)
                 {
-                    if (GenerateMaze.map[i, j] == "i" || GenerateMaze.map[i, j] == "O")
+                    if (GenerateMaze.map![i, j] == "i" || GenerateMaze.map[i, j] == "O")
                     {
                         GenerateMaze.map[i, j] = "?";
                     }
-                    if (GenerateMaze.truemap[i, j] == "i" || GenerateMaze.truemap[i, j] == "O")
+                    if (GenerateMaze.truemap![i, j] == "i" || GenerateMaze.truemap[i, j] == "O")
                     {
                         GenerateMaze.truemap[i, j] = " ";
                     }

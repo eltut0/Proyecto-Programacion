@@ -15,7 +15,7 @@ class Menu
 
         int choice = 0;
 
-        Interface.Interface.WritingWOReadKey("Menu Principal");
+        Interface.Interface.WritingWOReadKey("Menu Principa");
         Console.Clear();
 
         //bucle principal del menu
@@ -112,7 +112,8 @@ class Menu
             {
                 if (choice == 0)
                 {
-                    //rompe e inicia el juego
+                    //rompe e inicia el juego llamando primero al selector de modo de juego
+                    Program.GameMode = SelectGameMode();
                     Program.NewGame = true;
                     break;
                 }
@@ -122,6 +123,7 @@ class Menu
                     if (File.Exists(SaveGame.route))
                     {
                         Program.NewGame = false;
+                        Program.LoadedGame = true;
                         break;
                     }
                     else
@@ -154,7 +156,7 @@ class Menu
 
         int choice = 0;
 
-        Interface.Interface.WritingWOReadKey("Juego Pausado");
+        Interface.Interface.WritingWOReadKey("Juego Pausad");
         Console.Clear();
 
         //bucle principal del menu
@@ -256,8 +258,15 @@ class Menu
                 }
                 else if (choice == 1)
                 {
-                    //llama al metodo de guardado de partidas
-                    SaveGame.SavingGame(change);
+                    if (Program.GameMode)
+                    {
+                        //llama al metodo de guardado de partidas
+                        SaveGame.SavingGame(change);
+                    }
+                    else
+                    {
+                        Interface.Interface.Writing("Lo lamento, el guardado de partida solo esta disponible para las partidas de PvP");
+                    }
                 }
                 else if (choice == 2)
                 {
@@ -298,7 +307,7 @@ class Menu
 
         int choice = 0;
 
-        Interface.Interface.WritingWOReadKey("Seleccione una dificultad");
+        Interface.Interface.WritingWOReadKey("Seleccione una dificulta");
         Console.Clear();
 
         //bucle principal del menu
@@ -462,7 +471,7 @@ class Menu
 
         int choice = 0;
 
-        Interface.Interface.WritingWOReadKey($"Jugador {ID}, seleccione un personaje");
+        Interface.Interface.WritingWOReadKey($"Jugador {ID}, seleccione un personaj");
         Console.Clear();
 
         //bucle principal del menu
@@ -711,7 +720,7 @@ class Menu
 
         int choice = 0;
 
-        Interface.Interface.WritingWOReadKey("Seleccione una habilidad especial");
+        Interface.Interface.WritingWOReadKey("Seleccione una habilidad especia");
         Console.Clear();
 
         //bucle principal del menu
@@ -864,6 +873,102 @@ class Menu
                 Interface.Interface.Writing("Ha fallado la asignacion de una habilidad especial");
                 player.Skill = false;
                 break;
+            }
+
+        } while (true);
+    }
+
+    //menu de seleccion de si se juega pvp o contra la IA, devuelve true para pvp y false para 
+    public static bool SelectGameMode()
+    {
+        string MMenu1 = "1. Jugador vs Jugador";
+        string MMenu2 = "2. Jugador vs IA";
+
+        int choice = 0;
+
+        Interface.Interface.WritingWOReadKey("Seleccione un modo de jueg");
+        Console.Clear();
+
+        //bucle principal del menu
+        do
+        {
+            //bucle de muestreo de informacion y lectura de teclas
+            do
+            {
+                //limpieza de cola de teclas
+                Usefulmethods.CleanQueue();
+
+                AnsiConsole.MarkupLine("[green]{0}[/]", "Seleccione un modo de juego");
+
+                if (choice == 0)
+                {
+                    Interface.Interface.MarkupWhiteBack(MMenu1);
+                }
+                else
+                {
+                    Interface.Interface.RegularMarkup(MMenu1);
+                }
+
+                if (choice == 1)
+                {
+                    Interface.Interface.MarkupWhiteBack(MMenu2);
+                }
+                else
+                {
+                    Interface.Interface.RegularMarkup(MMenu2);
+                }
+
+                Thread.Sleep(150);
+                Console.Clear();
+
+                //rompe el bucle si
+                if (Console.KeyAvailable)
+                {
+                    break;
+                }
+
+                AnsiConsole.MarkupLine("[green]{0}[/]", "Seleccione un modo de juego");
+
+                Interface.Interface.RegularMarkup(MMenu1);
+                Interface.Interface.RegularMarkup(MMenu2);
+
+                Thread.Sleep(150);
+                Console.Clear();
+
+                //rompe el bucle si
+                if (Console.KeyAvailable)
+                {
+                    break;
+                }
+
+            } while (true);
+
+            ConsoleKeyInfo key = Console.ReadKey(true);
+
+            if (key.Key == ConsoleKey.UpArrow || key.Key == ConsoleKey.W)
+            {
+                if (choice > 0)
+                {
+                    choice--;
+                }
+            }
+            else if (key.Key == ConsoleKey.DownArrow || key.Key == ConsoleKey.S)
+            {
+                if (choice < 1)
+                {
+                    choice++;
+                }
+            }
+            else if (key.Key == ConsoleKey.Enter)
+            {
+                if (choice == 0)
+                {
+                    return true;
+                }
+                else if (choice == 1)
+                {
+                    return false;
+                }
             }
 
         } while (true);

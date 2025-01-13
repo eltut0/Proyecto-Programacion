@@ -155,8 +155,8 @@ namespace Interface
         //genera un fotograma de la matriz sin retraso
         public static void PrintMaze(string[,] maze, string[,] truemap, Player player1, Player player2)
         {
-            maze[player1.Position.xcoordinate, player1.Position.ycoordinate] = player1.Token;
-            maze[player2.Position.xcoordinate, player2.Position.ycoordinate] = player2.Token;
+            maze[player1.Position!.xcoordinate, player1.Position.ycoordinate] = player1.Token!;
+            maze[player2.Position!.xcoordinate, player2.Position.ycoordinate] = player2.Token!;
 
             for (int i = 0; i < GenerateMaze.size; i++)
             {
@@ -220,7 +220,7 @@ namespace Interface
             table.AddColumns("Dados");
             table.AddColumns("Movimientos restantes");
             table.AddColumns("Turno actual");
-            table.AddRow("Tipo de virus", player1.Type, player2.Type);
+            table.AddRow("Tipo de virus", player1.Type!, player2.Type!);
 
             if (change) 
             {
