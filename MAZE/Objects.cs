@@ -42,7 +42,7 @@ namespace Objects
         //defino checkpoints aleatorios por el mapa
         public static void Checkpoints(string[,] maze)
         {
-            for (int i = 0; i < GenerateMaze.size / 2; i++)
+            for (int i = 0; i < GenerateMaze.size / 4; i++)
             {
                 Objects objects = new Objects();
                 Position position = new Position();

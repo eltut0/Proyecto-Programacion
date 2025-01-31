@@ -106,7 +106,7 @@ class Skills
             }
             else
             {
-                yinflim = player.Position.xcoordinate - 11;
+                yinflim = player.Position.ycoordinate - 11;
             }
 
             //ahora mediante 4 pares de bucles for se llena la matriz leyendo del truemap

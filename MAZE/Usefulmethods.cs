@@ -25,5 +25,13 @@ public class Usefulmethods
         Player.PlayerList.Clear();
         Program.player1 = null!;
         Program.player2 = null!;
+        ArtificialIntelligence.AImap = null;
+        ArtificialIntelligence.Stop = false;
+        ArtificialIntelligence.CurrentExplorePoint = null;
+        ArtificialIntelligence.VisitedCHeckPoints.Clear();
+        Program.Turns = 0;
+        Program.Break = false;
+        MAZE.Map.GenerateMaze.size = 0;
+        Skills.tempMap = null;
     }
 }

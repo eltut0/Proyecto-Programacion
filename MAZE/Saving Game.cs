@@ -29,19 +29,19 @@ public class SaveGame
                 foreach (var obj in Objects.Objects.Objectslist)
                 {
                     sw.WriteLine(obj.type);
-                    sw.WriteLine(obj.position.xcoordinate);
+                    sw.WriteLine(obj.position!.xcoordinate);
                     sw.WriteLine(obj.position.ycoordinate);
                 }
 
                 sw.WriteLine("Stop");
 
                 //guarda los mapas
-                foreach (string strings in GenerateMaze.map)
+                foreach (string strings in GenerateMaze.map!)
                 {
                     sw.WriteLine(strings);
                 }
 
-                foreach (string strings in GenerateMaze.truemap)
+                foreach (string strings in GenerateMaze.truemap!)
                 {
                     sw.WriteLine(strings);
                 }
@@ -50,18 +50,18 @@ public class SaveGame
                 foreach (var player in Player.PlayerList)
                 {
                     sw.WriteLine(player.Type);
-                    sw.WriteLine(player.Position.xcoordinate);
+                    sw.WriteLine(player.Position!.xcoordinate);
                     sw.WriteLine(player.Position.ycoordinate);
                     sw.WriteLine(player.Archives);
                     sw.WriteLine(player.Token);
                     sw.WriteLine(player.ExitChar);
                     sw.WriteLine(player.ActualType);
                     sw.WriteLine(player.SCount);
-                    sw.WriteLine(player.Entrance.xcoordinate);
+                    sw.WriteLine(player.Entrance!.xcoordinate);
                     sw.WriteLine(player.Entrance.ycoordinate);
                     sw.WriteLine(player.IsSafe);
                     sw.WriteLine(player.Refresh);
-                    sw.WriteLine(player.Exit.xcoordinate);
+                    sw.WriteLine(player.Exit!.xcoordinate);
                     sw.WriteLine(player.Exit.ycoordinate);
                     sw.WriteLine(player.Skill);
                     sw.WriteLine(player.Speed);

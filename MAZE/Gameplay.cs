@@ -175,11 +175,17 @@ public class Gameplay
             Moves();
             ArtificialIntelligence.AITurn();
 
+            //valora el posible cierre de la partida
+            if (Program.Break || Program.player2.Victory)
+            {
+                break;
+            }
+
             //modificacion de los contadores
             Program.Turns++;
 
             //llama al antivirus
-            if (Program.Turns % Gameplay.VCleaning == 0)
+            if (Program.Turns % VCleaning == 0)
             {
                 Antivirus();
             }
@@ -487,19 +493,25 @@ public class Gameplay
                         player.Position.ycoordinate = GenerateMaze.RandomCoordinate();
 
                         //si es un bot limpia el objetivo de exploracion actual para q no se maree
-                        if ((bool)player.IMBot!)
+                        if (player.IMBot)
                         {
                             ArtificialIntelligence.CurrentExplorePoint = null;
                         }
                     }
                 }
-                else if (v.type == "Formatting" && LastMove == true)
+                else if (v.type == "Formatting" && LastMove)
                 {
                     Console.Clear();
                     Interface.Interface.Writing("Mala suerte, ha caido en una trampa del tipo formateo del sistema, sera devuelto al inicio");
                     player.Position.xcoordinate = player.Entrance!.xcoordinate;
                     player.Position.ycoordinate = player.Entrance.ycoordinate;
                     Objects.Objects.Objectslist.Remove(v);
+
+                    //si es un bot limpia el objetivo de exploracion actual para q no se maree
+                    if (player.IMBot)
+                    {
+                        ArtificialIntelligence.CurrentExplorePoint = null;
+                    }
                 }
             }
         }
@@ -566,7 +578,7 @@ public class Gameplay
                         player.Position.ycoordinate = player.Entrance.ycoordinate;
 
                         //vacia la posicion de la IA para q no se maree
-                        if ((bool)player.IMBot!)
+                        if (player.IMBot)
                         {
                             ArtificialIntelligence.CurrentExplorePoint = null;
                         }
@@ -576,7 +588,6 @@ public class Gameplay
                         Interface.Interface.Writing($"EL jugador {player.Token} ha superado la limpieza de antivirus");
                     }
                 }
-                
             }
             else
             {

@@ -14,7 +14,7 @@ namespace MAZE.Players
         public string? Type { get; set; }
 
         //nooleano para distinguir entre IA
-        public bool? IMBot { get; set; }
+        public bool IMBot { get; set; }
 
         //solo aplicable para el metamorfico
         public string? ActualType { get; set; }

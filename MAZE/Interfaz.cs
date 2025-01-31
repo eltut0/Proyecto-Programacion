@@ -21,7 +21,7 @@ namespace Interface
         //muestra infomracion importante para el jugador y se corre al principio
         public static void BeginnerInfo()
         {
-            string info0 = "Puedes saltar la iteracion del texto pulsando Enter.";
+            string info0 = "Puedes saltar la iteracion del texto pulsando Barra Espaciadora.";
             string info1 = "Eres un virus en los 70's y tu objetivo es intentar infectar un ordenador primero que el contrario.";
             string info2 = "Para ello, los jugadores se moveran por turnos, lanzando dados. El personaje podra moverse, como maximo, la cantidad de la diferencia entre ambos dados, multiplicada por la velocidad de su personaje.";
             string info3 = "El tablero comenzara totalmente bloqueado, y segun avancen, las casillas adyacentes se iran desbloqueando.";
@@ -34,9 +34,11 @@ namespace Interface
             string info10 = "La trampa Redistribucion, se activa al pasar sobre ella y envia al jugador a una posicion aleatoria del tablero. Con una probabilidad del 75%, se desactiva despues de caer sobre ella.";
             string info11 = "La habilidad especial se activa con la tecla G una vez que el tiempo de refresco haya llegado al limite";
             string info12 = "Siempre puede pulsar Esc en la partida para acceder al menu de pausa";
-            string info13 = "De momento te bastara con esto para comenzar, buena suerte infectando!";
+            string info13 = "Puedes terminar tu turno en todo momento pulsando barra espaciadora";
+            string info14 = "Para desplazarte tanto en los menus como en el juego, se pueden usar tanto las flechas, como las teclas w,a,s,d";
+            string info15 = "De momento te bastara con esto para comenzar, buena suerte infectando!";
             //annado los textos del tutorial y la info del juego a un arreglo y voy escribiendolas una por una
-            string[] strings = { info0, info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11, info12, info13 };
+            string[] strings = { info0, info1, info2, info3, info4, info5, info6, info7, info8, info9, info10, info11, info12, info13, info14, info15 };
 
             foreach (string info in strings)
             {
@@ -57,7 +59,7 @@ namespace Interface
                 { 
                     ConsoleKeyInfo key = Console.ReadKey(true);
 
-                    if (key.Key == ConsoleKey.Enter)
+                    if (key.Key == ConsoleKey.Spacebar)
                     {
                         Console.Clear();
                         AnsiConsole.Markup("[green]{0}[/]", info);
@@ -127,7 +129,7 @@ namespace Interface
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
 
-                    if (key.Key == ConsoleKey.Enter)
+                    if (key.Key == ConsoleKey.Spacebar)
                     {
                         Console.Clear() ;
                         AnsiConsole.Markup("[green]{0}[/]", info);
@@ -190,6 +192,14 @@ namespace Interface
                         else if (maze[i, j] == "2")
                         {
                             AnsiConsole.Markup("[bold red]{0}[/]", "2 ");
+                        }
+                        else if (maze[i,j] == player1.Token && GenerateMaze.truemap![i,j] == "O")
+                        {
+                            AnsiConsole.Markup("[bold blue]{0}[/]", $"{player1.Token} ");
+                        }
+                        else if (maze[i, j] == player2.Token && GenerateMaze.truemap![i, j] == "O")
+                        {
+                            AnsiConsole.Markup("[bold blue]{0}[/]", $"{player2.Token} ");
                         }
                         else
                         {

@@ -539,6 +539,29 @@ class Menu
                     Interface.Interface.RegularMarkup(MMenu6);
                 }
 
+                Console.WriteLine();
+
+                if (choice == 0)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[0].description!);
+                }
+                else if (choice == 1)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[1].description!);
+                }
+                else if (choice == 2)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[2].description!);
+                }
+                else if (choice == 4)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[3].description!);
+                }
+                else if (choice == 3)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[4].description!);
+                }
+
                 Thread.Sleep(150);
                 Console.Clear();
 
@@ -556,6 +579,29 @@ class Menu
                 Interface.Interface.RegularMarkup(MMenu4);
                 Interface.Interface.RegularMarkup(MMenu5);
                 Interface.Interface.RegularMarkup(MMenu6);
+
+                Console.WriteLine();
+
+                if (choice == 0)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[0].description!);
+                }
+                else if (choice == 1)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[1].description!);
+                }
+                else if (choice == 2)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[2].description!);
+                }
+                else if (choice == 4)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[3].description!);
+                }
+                else if (choice == 3)
+                {
+                    Interface.Interface.RegularMarkup(Characters.CharactersList[4].description!);
+                }
 
                 Thread.Sleep(150);
                 Console.Clear();

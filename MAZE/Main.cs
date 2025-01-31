@@ -27,15 +27,17 @@ public class Program
     //bool para saltar al segndo turno
     public static bool Jump {  get; set; }
 
-    public static Player? player1 { get; set;}
+    public static Player player1 { get; set;}
 
-    public static Player? player2 { get; set;}
+    public static Player player2 { get; set; }
 
     public static void Main(string[] args)
     {
         Console.Clear();
         //muestra la info inicial(definir en su respectiva clase)
         Interface.Interface.Tittle();
+
+        Task maintheme = Task.Run(() => Music.MainTheme());
 
         do
         {
@@ -66,8 +68,3 @@ public class Program
         } while (true);
     }
 }
-
-//pendientes:
-//implementando IA
-
-//resuelto:
