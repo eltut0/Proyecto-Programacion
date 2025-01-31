@@ -56,4 +56,4 @@ que normalmente seria un archivo (i) o un caracter que represente "?", los cuale
 de los checkpoints, que siempre estan ahi, o los archivos una vez que se alcanzan los 5, ya que no se pueden recoger. Por eso los checkpoints no se 
 registran en el mapa de la IA, cada vez que pasa sobre uno su posicion se guarda en una lista, y cada vez q se escribe el mapa de la IA, se revisan las
 posiciones de checkpoints ya visitados y se rellenan con un espacio para que no interfieran. Ese mismo proceso se realiza con los archivos una vez
-que se llega a la cantidad de 5, pues es el limite que se pueden recojer.
+que se llega a la cantidad de 5, pues es el limite que se pueden recojer. 
