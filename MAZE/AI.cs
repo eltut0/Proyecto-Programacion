@@ -151,7 +151,8 @@ public class ArtificialIntelligence
     public static void AIModPosition()
     {
         //chequear la disponibilidad de una habilidad especial
-        if (Program.player2.Skill)
+        //condiciono con la cantidad de turnos faltantes apra el antivirus para q active su habilidad en una fase mas adelantada del juego, uando este explorando algun punto
+        if (Program.player2.Skill && Gameplay.VCleaning - (Program.Turns % Gameplay.VCleaning) <= 4)
         {
             Skills.Skill(Program.player2);
         }
@@ -591,6 +592,8 @@ public class ArtificialIntelligence
             else
             {
                 ReadingStack.Pop();
+
+                
             }
         } while (true);
 
